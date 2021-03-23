@@ -1,0 +1,401 @@
+\documentclass{hertieteaching}
+\usepackage{cancel}
+\usepackage{hyperref}
+
+\title{Parallel Processing}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Problem}
+\protect\hypertarget{problem}{}
+``Muuuh, my code is so slow\ldots{}''
+\end{frame}
+
+\begin{frame}{Four types of slow}
+\protect\hypertarget{four-types-of-slow}{}
+Code can be slow because it's constrained by
+
+\begin{itemize}
+
+\item
+  network access e.g.~web scraping, where \emph{you} may be the one
+  enforcing the slow
+\item
+  memory e.g.~big data needed in memory
+\item
+  disk access e.g.~searching through huge files
+\item
+  processing power e.g.~difficult optimization or lots of bootstrap
+  samples
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Solutions to memory-constrained slow}
+\protect\hypertarget{solutions-to-memory-constrained-slow}{}
+More memory :-)
+
+\pause
+
+\begin{itemize}
+
+\item
+  Memory efficient R packages: \texttt{biglm}, \texttt{speedglm},
+  \texttt{biglars}
+\item
+  Use a database: \texttt{sqlite3} or \texttt{monet}, accessed via
+  \texttt{RSQLite} and \texttt{MonetDBLite} respectively, and best
+  approached through \texttt{dbplyr} unless you know SQL
+\item
+  `Memory map' the files: \texttt{mmap} but also others
+\item
+  Use a `distributed file system': \texttt{sparklyr} (built into
+  RStudio), \texttt{SparkR} (not Dropbox, NFS partition, etc.)
+\end{itemize}
+
+Sampling:
+\begin{itemize}
+  \item Sometimes a stratified sample is as good as a census\ldots
+\end{itemize}
+
+External options:
+\begin{itemize}
+  \item Use the command line tools \href{https://www.datascienceatthecommandline.com/2e/}{Janssens, J. (forthcoming)}
+  \item or Python instead of R: same problems, same solutions, different package names
+\end{itemize}
+
+
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Solutions to processor-constrained slow}
+
+Step 0:
+\begin{itemize}
+  \item Profile: casual: \textsf{system.time} and serious: \textsf{microbenchmark} package
+\end{itemize}
+
+Then, in rough order of preference:
+\begin{itemize}
+\item Write better code (!)
+\item No really. Write better code. See `Advanced R' (ch. 23-25) for excellent advice
+\item
+  Run your code on somebody else's machine too
+\item
+  Run your code on more of your own machine
+\item
+  Run your code on more of somebody else's machine
+\end{itemize}
+
+Maybe\ldots
+\begin{itemize}
+  \item Write \textit{different} code, e.g. \textsf{C++} using \textsf{Rcpp}
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Faster R?}
+
+Two good tips for fast R:
+\begin{itemize}
+  \item Don't write Python in R. Use vectorised functions where they exist
+  \item Stop R copying things in the background
+\end{itemize}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+collapse <- function(xs) {
+  out <- ""
+  for (x in xs) 
+    out <- paste0(out, x)
+  out
+}
+loop10  <- collapse(strings10),
+loop100 <- collapse(strings100),
+vec10   <- paste(strings10, collapse = ""),
+vec100  <- paste(strings100, collapse = "")
+\end{verbatim}
+\normalsize
+
+\column{0.5\textwidth}
+\bigskip
+\begin{tabular}{lrrr} \toprule
+   expression &     min(µs)  & median(µs) & itr/sec\\ \midrule
+   loop10     &  50.7  & 53.2  &  18490. \\
+   loop100    & 954.1  &976.1  &   1007. \\
+   vec10      &  10.3  & 11.1  &  88582. \\
+   vec100     &  45.8  & 46.8  &  20638. \\ \bottomrule
+\end{tabular}
+
+\end{columns}
+
+
+
+  
+\end{frame}
+
+
+\begin{frame}[fragile]{What can you expect?}
+
+\begin{itemize}
+\item
+  Better code: \emph{Potentially} orders of magnitude speedup
+\item
+  Parallel: \textless2 x speedup
+\item
+  Parallel: \textless16 x speedup (on my laptop)
+\item
+  Parallel: \textless28 x speedup (An expensive AWS instances)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Architecture}
+
+\textsc{hardware architecture}
+
+\begin{itemize}
+\item Several CPUs a.k.a. `sockets'
+\item each with several cores
+\end{itemize}
+
+A `cluster' just ties several machines together
+
+\pause
+
+\textsc{software architecture}
+
+\begin{itemize}
+\item
+  A `process' is a bunch of data and code in memory (different processes
+  can't see each others' memory)
+\item
+  A `thread' is a path of execution in a process (all threads see the same memory)
+\end{itemize}
+
+POSIX compliant operating systems (basically everything except Windows)
+can parallelize across `processes' \textit{or} across cores.
+\begin{itemize}
+  \item Where possible, parallelise across cores
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Two types of parallel}
+\protect\hypertarget{two-types-of-parallel}{}
+Inside the same CPU(s):
+
+\begin{itemize}
+
+\item
+  easier
+\item
+  shared memory
+\item
+  fast communication
+\item
+  fewer cores to work with
+\end{itemize}
+
+Between distinct CPU(s):
+
+\begin{itemize}
+
+\item
+  harder
+\item
+  memory contents need duplicating
+\item
+  slower comunication
+\item
+  more cores to work with
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{How much faster can we get?}
+\protect\hypertarget{how-much-faster-can-we-get}{}
+Parallelisation big picture
+
+\begin{itemize}
+
+\item
+  \emph{Split} Break the computation into parts
+\item
+  \emph{Apply} Send to each computing unit (core / processor) and do the
+  work
+\item
+  \emph{Combine} Gather the results together and hand back
+\end{itemize}
+
+Transaction costs! Diminishing returns!
+
+\pause
+
+Bottom line: 
+\begin{itemize}
+  \item K-way parallelisation doesn't usually make things K times faster
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Are we \emph{already} running in parallel?}
+
+\begin{verbatim}
+> library(quanteda)
+
+Package version: 2.1.2
+Parallel computing: 2 of 16 threads used.
+See https://quanteda.io for tutorials and examples.
+
+Attache Paket: ‘quanteda’
+
+The following object is masked from ‘package:utils’:
+
+    View  
+\end{verbatim}
+
+\normalsize
+
+Less obviously, matrix operations e.g.~\texttt{\%*\%} are often
+\emph{threaded}.
+\end{frame}
+
+\begin{frame}[fragile]{Base r resources}
+
+Since R 2.14.0 (in 2011) has contained the \texttt{parallel} package
+
+\begin{itemize}
+
+\item
+  You may read about \texttt{snow} and \texttt{multicore}
+\item
+  \texttt{parallel} supersedes these but some packages still use them
+\end{itemize}
+
+They reflect the two ways we can run parallel on a single machine
+\pause
+
+\bigskip
+Alternative parallel frameworks
+\begin{itemize}
+\item
+  \texttt{parallel} offers \texttt{mclapply}, \texttt{mcmapply},
+  \texttt{clusterMap}, \texttt{parApply}, \texttt{parLapply},
+  \texttt{parSapply}, etc.
+\item
+  \texttt{foreach} offers \texttt{foreach}, \texttt{times}.
+%\item
+%  \texttt{plyr} offers \texttt{aaply}, \texttt{ddply}, \texttt{dlply},
+%  \texttt{llply(...,\ .parallel\ =\ TRUE)} (uses \texttt{foreach}
+%  internally)
+\item
+  \texttt{future.apply} brand new and pretty cool
+\item
+  Not quite \textit{ready} for prime time:
+  \href{https://github.com/hadley/multidplyr}{\texttt{multidplyr}}
+
+\end{itemize}
+\end{frame}
+
+
+
+%\begin{frame}[fragile]{More processes or more cores?}
+%\protect\hypertarget{more-processes-or-more-cores}{}
+%On non-Windows machines, we can run in parallel by \emph{forking}
+%multiple processes
+%
+%\begin{itemize}
+%
+%\item
+%  each process is basically a clone: each has a copy of the same data
+%  but they do not share memory
+%\item
+%  \texttt{snow} does the same but for a complete R session (you have to
+%  copy the data over to each session yourself, which is slower, but the
+%  session can be on another machine)
+%\end{itemize}
+%\end{frame}
+\begin{frame}{Use cases and problems}
+  
+Basically: \emph{Lots} of separate actions that \emph{do not need to
+know about each other}.
+
+\pause
+
+Where we need to be careful what kind of parallel we're using
+
+\begin{itemize}
+\item
+  file pointers `connections'
+\item
+  database connections
+\item
+  parsed html pages (e.g.~from \texttt{rvest})
+\item
+  \texttt{Rcpp} and \texttt{rJava} objects
+\end{itemize}
+
+And don't do this stuff inside \texttt{dplyr}
+pipes\ldots{}
+
+Cases where reproducibility is important
+\begin{itemize}
+  \item We usually have to set the random number seed on the cluster itself
+  \item Don't forget!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: (re)sampling}
+
+Sampling and re-sampling, e.g. the bootstrap, are natural tasks to parallelise
+
+Reminder about the bootstrap:
+\begin{itemize}
+  \item We would like the sampling distribution of some statistic
+  \item We can do lots of \textit{hard math} and get an asymptotic answer
+  \item We can do lots of \textit{computing} and get an (often better but still) asymptotic answer
+\end{itemize}
+
+Intuition:
+\begin{itemize}
+  \item The best idea we have about the structure of the population is the sample
+  \item Treat the sample as the population
+  \item Resample with replacement to make a new sample
+  \item Computer the statistic on that bootstrap sample
+\end{itemize}
+Summarise all the bootstrapped values of the statistic and that as the sampling distribution
+
+\end{frame}
+
+\begin{frame}{Example: (re)sampling}
+
+Example statistics (univariate, but there's almost no constraint here)
+\begin{itemize}
+  \item Value of coefficient 1
+  \item Whether coefficient 1 is larger than coefficient 2
+  \item Predicted outcome when input is\ldots
+  \item Position of party X in 1990
+\end{itemize}
+
+Let's try this.
+
+\end{frame}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\printbibliography	
+\end{frame}
+
+\end{document}

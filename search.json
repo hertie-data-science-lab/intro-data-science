@@ -1,0 +1,129 @@
+{
+  "articles": [
+    {
+      "path": "index.html",
+      "title": "Introduction to Data Science",
+      "description": "Data! Science!  What's not to like?\n",
+      "author": [],
+      "contents": "\n \n\nInstructors:\nDr. William E. M. Lowe and Prof. Simon Munzert\nOffice:\nRoom 3.14 (WL) and Room 3.13.1 (SM)\nOffice Hours\nBy arrangement. Email the instructors directly.\nClass Times\nThursdays 14:00-16:00\nSessions\n\nDate\nTitle\nInstructor\n1\n10.09.2020\nOverview and Basic Workflow\nWill\n2\n17.09.2020\nVersion Control and Coding Style\nSimon\n3\n24.09.2020\nRelationally Structured Data\nWill\n\n\nAssignment 1 out\n\n4\n01.10.2020\nSpatial Data\nSimon\n\n\nAssignment 2 out\n\n5\n08.10.2020\nText Data\nWill\n\n\nAssignment 3 out\n\n6\n15.10.2020\nWeb Data\nSimon\n\n\nAssignment 4 out\n\n\n\n \n\n7\n29.10.2020\nExperimental and Crowdsourced Data\nSimon\n8\n05.11.2020\nFitting Models\nWill\n9\n12.11.2020\nVisualization\nSimon\n10\n19.11.2020\nTrouble with Big Data\nWill\n11\n26.11.2020\nDebugging, Automation, and Packaging\nSimon\n\n\nAssignment 5 out\n\n12\n03.12.2020\nSpecial Topics\nWill\n\n14.12.2020\nFinal Exam Week\n\nGeneral Readings\nR4DS Grolemund, G., & Wickham, H. (2018). R for Data Science. O’Reilly.\nAdvR Wickham, H. (2019). Advanced R. CRC Press.\nOnline Resources\nJenny Bryan STAT 545: Data wrangling, exploration, and analysis with R\nMine Cetinkaya-Rundel STA 199: Intro to data science\nRStudio Data science in a box\nGreg Wilson R for Data Science Instructor’s Guide\nGarrett Grolemund Hands-On Programming with R\nHadley Wickham R Packages\nEdwin Thoen Agile Data Science with R\nColin Rundel Statistical Programming\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:30+01:00"
+    },
+    {
+      "path": "syllabus.html",
+      "title": "Syllabus",
+      "description": "Your single source of course information\n",
+      "author": [],
+      "contents": "\nLogistics\n \n\nInstructors:\nDr. William E. M. Lowe and Prof. Simon Munzert\nOffice:\nRoom 3.14 (WL) and Room 3.13.1 (SM)\nOffice Hours\nBy arrangement. Email the instructors directly.\nClass Times\nThursdays 14:00-16:00\nFormat\nThis course uses a “flipped classroom” format and combines 50 minutes of pre-recorded material (autio or video) with a 50-minute interactive seminar. Students will use the pre-recorded material to prepare for the seminar. The seminar is taught onsite at the Hertie School, or online via the platform Clickmeeting, depending upon your location. For those attending the online seminar, Clickmeeting allows for interactive, participatory seminar style teaching.\nGeneral Readings\nDuring this course, we will frequently rely on the following textbooks:\n\nGrolemund, G., & Wickham, H. (2018). R for Data Science. O’Reilly. Free online version available at https://r4ds.had.co.nz/. [R4DS]\n\n\nWickham, H. (2019). Advanced R. CRC Press. Free online version available at https://adv-r.hadley.nz/. [AdvR]\n\nOnline Resources\nJenny Bryan STAT 545: Data wrangling, exploration, and analysis with R\nMine Cetinkaya-Rundel STA 199: Intro to data science\nRStudio Data science in a box\nGreg Wilson R for Data Science Instructor’s Guide\nGarrett Grolemund Hands-On Programming with R\nHadley Wickham R Packages\nEdwin Thoen Agile Data Science with R\nColin Rundel Statistical Programming\nPrerequisites\nStatistically, students should be familiar with fitting and interpreting linear models and with the basics of logistic regression. Previous exposure with any kind of measurement model or (index construction process) will be helpful, e.g. factor analysis, or IRT, but this material will be presented as needed.\nPractically, students should be competent, though need not be expert, at manipulating vectors and data.frames in R. Text data is unavoidably unwieldy and much of any text analysis is spent manipulating data, which the course will provide practice for but not teach from scratch. Experience with R graphics will also be an advantage, though is not required. The Data Science Lab’s help desk can suggest materials to fulfil the data manipulation prerequisites.\nGrading and Assignments\nTBA\nExercises\nIn the weekly assignments, you will apply the concepts learned in class to solve data analytic problem sets using R. While you are encouraged to collaborate, everyone will hand in a separate solution. Not all sessions will be accompanied by an assignment. The first week’s assignment will serve as a non-graded test run. The 6 best out of the remaining 7 assignments will contribute to the final grade. Grades will be based on (1) the accuracy of your solutions and (2) the adherence of a clean and efficient coding style that you will learn in the first sessions.\nFinal Report\nIn the final data analysis project, to be submitted a couple of weeks after classes have finished, you will design and implement your own data analysis project. You are supposed to collaborate in groups of two or three students. Student groups choose their topic subject to approval by the instructors. Grades will be based on a group presentation and report, weighted equally.\nParticipation\nThe participation grade is based on the assumption that students take part, not as passive consumers of knowledge, but as active participants in the exchange, production, and critique of ideas—their own ideas and the ideas of others. Therefore, students should come to class not only having read and viewed the materials assigned for that day but also prepared to discuss the readings of the day and to contribute thoughtfully to the conversation. Participation is graded subtractively; students receive the full grade except to the extent they fail to take adequate part in the class. Participation is marked by its active nature, its consistency, and its quality, but note that it is both unnecessary and also unwise, to monopolize conversation in order to maximize participation grade. Participation that makes it harder for other class members to engage in discussion will lead to a lower grade, regardless of the quality of interventions.\nParticipation is graded subtractively; students receive the full grade except to the extent they fail to take adequate part in the class. Participation is marked by its active nature, its consistency, and its quality, but note that it is both unnecessary and also unwise, to monopolize conversation in order to maximize participation grade. Participation that makes it harder for other class members to engage in discussion will lead to a lower grade, regardless of the quality of interventions.\nLate submission of assignments\nFor each day the assignment is turned in late, the grade will be reduced by 10% (e.g. submission two days after the deadline would result in 20% grade deduction).\nAttendance\nStudents are expected to be present and prepared for every class session. Active participation during lectures and seminar discussions is important. If unavoidable circumstances arise which prevent attendance or preparation, the instructor should be advised by email with as much advance notice as possible. Please note that students cannot miss more than two out of 12 course sessions. For further information please consult the Examination Rules §10.\nAcademic Integrity\nThe Hertie School is committed to the standards of good academic and ethical conduct. Any violation of these standards shall be subject to disciplinary action. Plagiarism, deceitful actions as well as free-riding in group work are not tolerated. See Examination Rules §16.\nCompensation for Disadvantages\nIf a student furnishes evidence that he or she is not able to take an examination as required in whole or in part due to disability or permanent illness, the Examination Committee may upon written request approve learning accommodation(s). In this respect, the submission of adequate certificates may be required. See Examination Rules §14.\nExtenuating circumstances\nAn extension can be granted due to extenuating circumstances (i.e., for reasons like illness, personal loss or hardship, or caring duties). In such cases, please contact the course instructors and the Examination Office in advance of the deadline.\nSession Overview\n\nDate\nTitle\nInstructor\n1\n10.09.2020\nOverview and Basic Workflow\nWill\n2\n17.09.2020\nVersion Control and Coding Style\nSimon\n3\n24.09.2020\nRelationally Structured Data\nWill\n\n\nAssignment 1 out\n\n4\n01.10.2020\nSpatial Data\nSimon\n\n\nAssignment 2 out\n\n5\n08.10.2020\nText Data\nWill\n\n\nAssignment 3 out\n\n6\n15.10.2020\nWeb Data\nSimon\n\n\nAssignment 4 out\n\n\n\n \n\n7\n29.10.2020\nExperimental and Crowdsourced Data\nSimon\n8\n05.11.2020\nFitting Models\nWill\n9\n12.11.2020\nVisualization\nSimon\n10\n19.11.2020\nTrouble with Big Data\nWill\n11\n26.11.2020\nDebugging, Automation, and Packaging\nSimon\n\n\nAssignment 5 out\n\n12\n03.12.2020\nSpecial Topics\nWill\n\n14.12.2020\nFinal Exam Week\n\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:30+01:00"
+    },
+    {
+      "path": "week01.html",
+      "title": "Overview and basic workflow",
+      "description": "",
+      "author": [],
+      "date": "September 10th, 2020",
+      "contents": "\nLearning Objective\nIn this session we will work on establishing an efficient, replicable, and stress free data science project workflow. We will save the course overview for the lecture.\nRequired Readings\nR4DS. Chapters 4 & 8.\nLecture\nVideo\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:31+01:00"
+    },
+    {
+      "path": "week02.html",
+      "title": "Version Control and Coding Style",
+      "description": "",
+      "author": [],
+      "date": "September 17th, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have learned about the virtues of a robust version control workflow , (b) have learned the basics of functional programming to support an efficient coding style, and (c) are able to implement that workflow with Git and GitHub.\nRequired Readings\nBryan, Jenny and Jim Hester. (2018). Happy Git and GitHub for the user. https://happygitwithr.com/\nWickham, Hadley. The tidyverse style guide. https://style.tidyverse.org/\nBryan, Jenny. Stat545, Chapters 17-21 (R as a programming Language). https://stat545.com/r-objects.html\nOptional Readings\nAdvR. Chapters 6—11.\nWickham, H. (2015). R Packages. O’Reilly Media. Chapter 13 (Git and GitHub). http://r-pkgs.had.co.nz/git.html\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:31+01:00"
+    },
+    {
+      "path": "week03.html",
+      "title": "Relationally Structured Data",
+      "description": "",
+      "author": [],
+      "date": "September 24th, 2020",
+      "contents": "\nLearning Objective\nAfter this session you will (a) understand the principles of relational data structures and basic normalization, (b) be able to manipulate and join tables of data, (c) be able to interact with remote relational databases as if local.\nRequired Readings\nR4DS. Chapter 12-13\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:31+01:00"
+    },
+    {
+      "path": "week04.html",
+      "title": "Spatial Data",
+      "description": "",
+      "author": [],
+      "date": "October 1st, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have learned how spatial information can be encoded in spatial features (points, lines, polygons), (b) are able to set up and manage spatial datasets, and (c) can visualize spatial data with R.\nRequired Readings\nPebesma, E. (2018). Simple features for R: standardized support for spatial vector data. The R Journal, 10(1), 439-446.\nBivand, R. S., Pebesma, E. J., Gomez-Rubio, V., & Pebesma, E. J. (2008). Applied Spatial Data Analysis with R. Springer. Chapter 1\nOptional Readings\nCRAN Task View: Analysis of Spatial Data. https://cran.r-project.org/web/views/Spatial.html\nSimple Features for R. https://github.com/r-spatial/sf/\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:32+01:00"
+    },
+    {
+      "path": "week05.html",
+      "title": "Text Data",
+      "description": "",
+      "author": [],
+      "date": "October 8th, 2020",
+      "contents": "\nLearning Objective\nAfter this session you will (a) understand the essential problems of working with text as data and their solutions and (b) have a basic understanding of and ability to apply topic and scaling models, and their manual counterparts\nRequired Readings\nLucas, Christopher et al. 2013. “Computer Assisted Text Analysis for Comparative Politics.”\nGrimmer, J, and B M Stewart. 2013. “Text as Data: The Promise and Pitfalls of Automatic Content Analysis Methods for Political Texts.” Political Analysis 21(3): 267–97.\nOptional Readings\nRoberts, Margaret E. et al. 2014. “Structural Topic Models for Open-Ended Survey Responses.” American Journal of Political Science 58(4): 1064–82.\nProksch, Sven-Oliver, Will Lowe, Jens Wäckerle, and Stuart Soroka. 2019. “Multilingual Sentiment Analysis: A New Approach to Measuring Conflict in Legislative Speeches.” Legislative Studies Quarterly 44(1): 97–131.\nSlapin, Jonathan B., and Sven-Oliver Proksch. 2008. “A Scaling Model for Estimating Time-Series Party Positions from Texts.” American Journal of Political Science 52(3): 705–22.\nSilge, Julia, and David Robinson. 2020. Tidy Text Mining. O’Reilly Media. https://www.tidytextmining.com/.\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:32+01:00"
+    },
+    {
+      "path": "week06.html",
+      "title": "Web Data",
+      "description": "",
+      "author": [],
+      "date": "October 15th, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have acquired basic knowledge of web technologies, (b) are able to scrape information from static and dynamic websites using R, and (c) are able to access web services (APIs) with R.\nRequired Readings\nMunzert, Simon, Christian Rubba, Peter Meißner, and Dominic Nyhuis, 2015: Automated Data Collection with R. A Practical Guide to Web Scraping and Text Mining. Chichester: John Wiley & Sons. Chapters 2 (HTML), 3 (XML and JSON), 4 (XPath), 5 (HTTP), 6 (AJAX), 9 (Scraping the Web)\n\nOptional Readings\nhttps://cran.r-project.org/web/views/WebTechnologies.html\nhttps://github.com/tidyverse/rvest\nhttps://github.com/jeroen/jsonlite\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:32+01:00"
+    },
+    {
+      "path": "week07.html",
+      "title": "Experimental and Crowdsourced Data",
+      "description": "",
+      "author": [],
+      "date": "October 29th, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have learned the basics about setting up and monitoring experimental analyses using R and (b) are able to design your own experiments and crowdsourced tasks online.\nRequired Readings\nAmazon Mechanical Turk Developer Guide. https://tinyurl.com/mturk-guide.\nProlific Getting Started. https://researcher-help.prolific.co/hc/en-gb/categories/360002553779-Getting-started\nOptional Readings\nCRAN Task View: Design of Experiments (DoE) & Analysis of Experimental Data. https://cran.r-project.org/web/views/ExperimentalDesign.html\nDeclareDesign. https://declaredesign.org/\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:33+01:00"
+    },
+    {
+      "path": "week08.html",
+      "title": "Fitting Models",
+      "description": "",
+      "author": [],
+      "date": "November 5th, 2020",
+      "contents": "\nLearning Objective\nAfter this session you will (a) understand the bias/variance trade-off in model fitting, (b) appreciate the implications of regularization strategies and the role of hyperparameter tuning, and (c) have a range of evaluation measures and strategies.\nRequired Readings\nBishop, Christopher M. 2006. Pattern Recognition and Machine Learning. New York: Springer. (available online) Ch 1, 3\nOptional Readings\nCRAN Task View: Reproducible Research. https://cran.r-project.org/web/views/MachineLearning.html\nBishop, Christopher M. 2006. Pattern Recognition and Machine Learning. New York: Springer.\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:33+01:00"
+    },
+    {
+      "path": "week09.html",
+      "title": "Visualization",
+      "description": "",
+      "author": [],
+      "date": "November 12th, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have learned about basic rules to making visualizations that accurately reflect the data, tell a story, and look professional, (b) have learned about popular mistakes in visualization and how to avoid them, and (c) are able to integrate visualization as an alternative means to analyze data into your workflow.\nRequired Readings\nWilke, Claus. O. (2019). Fundamentals of data visualization: a primer on making informative and compelling figures. O’Reilly Media. https://serialmentor.com/dataviz/\nR4DS, Chapter 3 (Data visualisation).\nOptional Readings\nHealy, K. (2018). Data visualization: a practical introduction. Princeton University Press. https://socviz.co/\nTraunmüller, R. (2020). Visualizing Data in Political Science. In: L. Curini & R. Franzese (eds.) The SAGE Handbook of Research Methods in Political Science and International Relations. Sage. https://tinyurl.com/visualization-polisci\nWickham, H. (2016). ggplot2: elegant graphics for data analysis. Springer. https://ggplot2-book.org/\nhtmlwidgets for R. https://www.htmlwidgets.org/\nSievert, C. (2019.) Interactive Web-Based Data Visualization with R, plotly, and shiny. CRC Press. https://plotly-r.com/\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:33+01:00"
+    },
+    {
+      "path": "week10.html",
+      "title": "Trouble with Big Data",
+      "description": "",
+      "author": [],
+      "date": "November 19th, 2020",
+      "contents": "\nLearning Objective\nAfter this session you will (a) appreciate the limitations of biased samples of ‘big data’ for statistical inference, (b) know how to benchmark your code, and (c) understand the basics of parallel processing, spreading your computation across cores of your and/or other machines.\nRequired Readings\nAdvR. Chapters 23—25.\nMeng, Xiao-Li. 2018. “Statistical Paradises and Paradoxes in Big Data (I): Law of Large Populations, Big Data Paradox, and the 2016 US Presidential Election.” The Annals of Applied Statistics 12(2): 685–726.\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:34+01:00"
+    },
+    {
+      "path": "week11.html",
+      "title": "Debugging, Automation, and Packaging",
+      "description": "",
+      "author": [],
+      "date": "November 26th, 2020",
+      "contents": "\nLearning Objective\nAfter this session, you (a) have learned the art of debugging, starting with a general strategy, then following up with specific tools, and (b) are able to turn your code into packages that others can easily download and use.\nRequired Readings\nAdvR. Chapter 22 (Debugging).\nWickham, H. (2015). R Packages. O’Reilly Media. Chapters 1, 2, 4—9, 14. http://r-pkgs.had.co.nz/\nOptional Readings\nBryan, Jenny. (2019). All the automation things. https://stat545.com/automation-overview.html\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:34+01:00"
+    },
+    {
+      "path": "week12.html",
+      "title": "Special Topics",
+      "description": "",
+      "author": [],
+      "date": "December 3rd, 2020",
+      "contents": "\nLearning Objective\nIn this session we will take students questions and make suggestion about topics and methods in data science that were not covered in detail during the course.\nLecture\nLink\n\n\n\n",
+      "last_modified": "2021-03-23T10:11:35+01:00"
+    }
+  ],
+  "collections": []
+}

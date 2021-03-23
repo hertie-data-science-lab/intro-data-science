@@ -1,0 +1,120 @@
+---
+title: "Syllabus"
+description: |
+  Your single source of course information
+bibliography: biblio.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Logistics
+
+&nbsp;
+------------------------------ ------------------------------- 
+**Instructors**:                [Dr. William E. M. Lowe](mailto:lowe@hertie-school.org) and [Prof. Simon Munzert](mailto:munzert@hertie-school.org)
+**Office**:                    Room 3.14 (WL) and Room 3.13.1 (SM)
+**Office Hours**               By arrangement. Email the instructors directly.
+**Class Times**                Thursdays 14:00-16:00
+---------------------------------------------------------------
+
+### Format
+
+This course uses a "flipped classroom" format and combines 50 minutes of pre-recorded material (autio or video) with a 50-minute interactive seminar. Students will use the pre-recorded material to prepare for the seminar. The seminar is taught onsite at the Hertie School, or online via the platform Clickmeeting, depending upon your location. For those attending the online seminar, Clickmeeting allows for interactive, participatory seminar style teaching.
+
+## General Readings
+
+During this course, we will frequently rely on the following textbooks: 
+
+> Grolemund, G., & Wickham, H. (2018). *R for Data Science*. O'Reilly. Free online version available at [https://r4ds.had.co.nz/](https://r4ds.had.co.nz/). [**R4DS**]
+
+> Wickham, H. (2019). *Advanced R*. CRC Press. Free online version available at [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/). [**AdvR**]
+
+## Online Resources
+
+-  Jenny Bryan [STAT 545: Data wrangling, exploration, and analysis with R](https://stat545.com)
+
+-  Mine Cetinkaya-Rundel [STA 199: Intro to data science](http://www2.stat.duke.edu/courses/Spring18/Sta199/)
+
+- RStudio [Data science in a box]( https://datasciencebox.org/)
+
+- Greg Wilson [R for Data Science Instructor's Guide](https://github.com/rstudio-education/r4ds-instructors)
+
+- Garrett Grolemund [Hands-On Programming with R](https://rstudio-education.github.io/hopr)
+
+- Hadley Wickham [R Packages](http://r-pkgs.had.co.nz/)
+
+- Edwin Thoen [Agile Data Science with R](https://edwinth.github.io/ADSwR/index.html)
+
+- Colin Rundel [Statistical Programming](http://www2.stat.duke.edu/~cr173/Sta523_Fa17)
+
+
+### Prerequisites
+
+Statistically, students should be familiar with fitting and interpreting linear models and with the basics of logistic regression. Previous exposure with any kind of measurement model or (index construction process) will be helpful, e.g. factor analysis, or IRT, but this material will be presented as needed.
+
+Practically, students should be competent, though need not be expert, at manipulating vectors and data.frames in R. Text data is unavoidably unwieldy and much of any text analysis is spent manipulating data, which the course will provide practice for but not teach from scratch. Experience with R graphics will also be an advantage, though is not required. The Data Science Lab’s help desk can suggest materials to fulfil the data manipulation prerequisites. 
+
+## Grading and Assignments
+
+TBA
+
+### Exercises
+
+In the weekly assignments, you will apply the concepts learned in class to solve data analytic problem sets using R. While you are encouraged to collaborate, everyone will hand in a separate solution. Not all sessions will be accompanied by an assignment. The first week's assignment will serve as a non-graded test run. The 6 best out of the remaining 7 assignments will contribute to the final grade. Grades will be based on (1) the accuracy of your solutions and (2) the adherence of a clean and efficient coding style that you will learn in the first sessions.
+
+### Final Report
+
+In the final data analysis project, to be submitted a couple of weeks after classes have finished, you will design and implement your own data analysis project. You are supposed to collaborate in groups of two or three students. Student groups choose their topic subject to approval by the instructors. Grades will be based on a group presentation and report, weighted equally. 
+
+### Participation 
+ 
+The participation grade is based on the assumption that students take part, not as passive consumers of knowledge, but as active participants in the exchange, production, and critique of ideas—their own ideas and the ideas of others. Therefore, students should come to class not only having read and viewed the materials assigned for that day but also prepared to discuss the readings of the day and to contribute thoughtfully to the conversation. Participation is graded subtractively; students receive the full grade except to the extent they fail to take adequate part in the class.  Participation is marked by its active nature, its consistency, and its quality, but note that it is both unnecessary and also unwise, to monopolize conversation in order to maximize participation grade. Participation that makes it harder for other class members to engage in discussion will lead to a lower grade, regardless of the quality of interventions.
+
+Participation is graded *subtractively*; students receive the full grade except to the extent they fail to take adequate part in the class.  Participation is marked by its active nature, its consistency, and its quality, but note that it is both unnecessary and also unwise, to monopolize conversation in order to maximize participation grade. Participation that makes it harder for other class members to engage in discussion will lead to a lower grade, regardless of the quality of interventions.
+
+### Late submission of assignments
+
+For each day the assignment is turned in late, the grade will be reduced by 10% (e.g. submission two days after the deadline would result in 20% grade deduction).
+
+### Attendance
+
+Students are expected to be present and prepared for every class session. Active participation during lectures and seminar discussions is important. If unavoidable circumstances arise which prevent attendance or preparation, the instructor should be advised by email with as much advance notice as possible. Please note that students cannot miss more than two out of 12 course sessions. For further information please consult the Examination Rules §10.
+
+### Academic Integrity
+
+The Hertie School is committed to the standards of good academic and ethical conduct. Any violation of these standards shall be subject to disciplinary action. Plagiarism, deceitful actions as well as free-riding in group work are not tolerated. See Examination Rules §16.
+
+### Compensation for Disadvantages
+
+If a student furnishes evidence that he or she is not able to take an examination as required in whole or in part due to disability or permanent illness, the Examination Committee may upon written request approve learning accommodation(s). In this respect, the submission of adequate certificates may be required. See Examination Rules §14.
+
+### Extenuating circumstances 
+
+An extension can be granted due to extenuating circumstances (i.e., for reasons like illness, personal loss or hardship, or caring duties). In such cases, please contact the course instructors and the Examination Office in advance of the deadline.
+
+## Session Overview 
+
+              Date        Title                                                   Instructor
+------------- ----------- ------------------------------------------------------- ------------
+**1**         10.09.2020  [Overview and Basic Workflow](week01.html)               Will
+**2**         17.09.2020  [Version Control and Coding Style](week2.html)           Simon
+**3**         24.09.2020  [Relationally Structured Data](week03.html)              Will
+                          *Assignment 1 out*
+**4**         01.10.2020  [Spatial Data](week04.html)                              Simon
+                          *Assignment 2 out*
+**5**         08.10.2020  [Text Data](week05.html)                                 Will
+                          *Assignment 3 out*
+**6**         15.10.2020  [Web Data](week06.html)                                  Simon
+                          *Assignment 4 out*
+                          &nbsp;
+**7**         29.10.2020  [Experimental and Crowdsourced Data](week07.html)        Simon
+**8**         05.11.2020  [Fitting Models](week08.html)                            Will
+**9**         12.11.2020  [Visualization](week09.html)                             Simon
+**10**        19.11.2020  [Trouble with Big Data](week10.html)                     Will
+**11**        26.11.2020  [Debugging, Automation, and Packaging](week11.html)      Simon
+                          *Assignment 5 out*
+**12**        03.12.2020  [Special Topics](week12.html)                            Will
+              14.12.2020  *Final Exam Week*
+----------------------------------------------------------------------------------------------

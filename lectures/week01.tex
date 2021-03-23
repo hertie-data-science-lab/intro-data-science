@@ -1,0 +1,359 @@
+\documentclass{hertieteaching}
+\usepackage{cancel}
+
+\title{Introduction: Workflow}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Taming chaos}
+
+In data analysis there are two sorts of \textit{surprises} and two sorts of \textit{cognitive stress}
+\begin{enumerate}
+  \item Analytical (often good)
+  \item Infrastructural (almost always bad)
+\end{enumerate}
+Analytical surprise is when you learn something from or about the data 
+
+Infrastructural surprise is when you discover you that 
+\begin{itemize}
+  \item you can't find what you did before
+  \item the analysis code breaks
+  \item the report doesn't compile
+  \item the co-author can't run your code
+\end{itemize}
+
+Data analysis can be stressful, workflow is there to ensure the only the \textit{right kind} of stress
+
+\end{frame}
+
+\begin{frame}{Taming chaos}
+  
+There is a division of labour:
+\begin{itemize}
+  \item Some languages have strong feeling about how work should flow, e.g. \textsf{Java}, \textsf{c++}
+  \item Some do not, e.g. \textsf{python} and \textsf{R}
+\end{itemize}
+For languages that do not impose themselves, we must use \textit{convention}.
+
+So this lecture is very largely about workflow conventions that we have collectively found to work well 
+\begin{itemize}
+  \item This is an R-based course, but only some of these conventions are R-specific. Feel free to export the rest to your other projects
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}{Essentials}
+
+You should \textit{always} think in terms of projects
+  
+A project is a self-contained unit of data science work that can be 
+\begin{itemize}
+  \item shared
+  \item recreated by others
+  \item packaged
+  \item mothballed
+\end{itemize}
+It contains
+\begin{itemize}
+  \item Content, e.g. raw data, processed data, scripts, functions, documents
+  \item Metadata: information about tools for running it, e.g. required libraries, compilers  
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Essentials: Structure}
+
+It is easiest to use your \textit{file system} to maintain this discreteness, and plain text files to record the metadata
+
+\begin{block}{Plain text ideology}
+See \textcite{Healy2019} for the advantages of working as far as possible with human-readable `plain text' formats over proprietary and binary ones
+\end{block}  
+
+For R projects
+\begin{itemize}
+  \item Projects are folders/directories
+  \item Metadata is the \textsf{.Rproj} files, perhaps augmented with the output of \textsf{renv}
+\end{itemize}
+
+
+
+\end{frame}
+\begin{frame}{Essentials: Structure}
+
+The ideal:  
+\begin{itemize}
+  \item One folder contains everything inside it
+  \item All internal paths are relative and point sideways or downwards
+  \item Can be relocated without problem
+  \item Put `product'-generating files at the top level
+\end{itemize}
+
+Paths and working directories can confuse people (not you of course), so these get their own conventions
+
+\end{frame}
+\begin{frame}[fragile]{Essentials: Good paths}
+
+Good paths: 
+\begin{itemize}
+  \item \texttt{"preprocessing.R"}, 
+  \item \texttt{"figures/perpetual-motion.png"}
+\end{itemize}
+Invariant to moving or sharing the project folder
+
+\end{frame}
+\begin{frame}[fragile]{Essentials: Bad paths}
+
+
+Bad paths:
+\begin{itemize}
+  \item \texttt{"../code/funcs.R"}
+  \item \texttt{"/Users/me/data/thing.sav"}
+\end{itemize}
+
+The first is confusing but not terrible. The second will not work if you share your project
+
+~\\
+But sometimes keeping data elsewhere \textit{is} unavoidable. Then
+\begin{verbatim}
+DATA <- file.path(Sys.getenv("HOME"), "data/thing.sav")
+\end{verbatim}
+can be handy. 
+\begin{itemize}
+  \item Hint: do all this at the \textit{very top} of whatever product you are working on
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Essentials: Bonus}
+
+You'll never have to write 
+\begin{verbatim}
+setwd("/Users/me/whereever/I/left/the/project")
+\end{verbatim}
+which is good because that won't travel either.
+
+~\\
+Just let it go\ldots
+
+\end{frame}
+\begin{frame}{Essentials: The working directory}
+  
+Set it manually once per session (\textsf{Session $>$ Set Working Directory $>$ Choose Directory}). Then all your good paths will ``just work''
+
+Better yet, have the metadata set it for you
+\begin{itemize}
+  \item Open your session by opening (choosing, clicking on) ~\texttt{myproject.Rproj}
+  \item Then you'll get the path set for you
+\end{itemize}
+
+Bonus bonus: You won't look like an amateur\ldots
+
+\end{frame}
+\begin{frame}{Essentials: Metadata}
+
+With external dependencies comes chaos.
+
+Early in a project, you can be fairly loose about libraries and dependencies
+
+As soon as you share it, you need to care\ldots
+
+For regular supporting tools, e.g. latex, use the \texttt{.Rproj} file to record your choices
+
+For R libraries:
+\begin{itemize}
+  \item lightweight solution: Put all your \texttt{library} calls at the top of the product (not in any files it calls).
+  Rstudio will pick up uninstalled libraries and ask if you want to install them
+  \item heayweight solution: \texttt{renv} and the tools on the \href{https://cran.r-project.org/web/views/ReproducibleResearch.html}{Reproducibility Task View}
+\end{itemize}
+
+For system dependencies, e.g. \textsf{C,C++} libraries, compilers, python versions: 
+\begin{itemize}
+  \item This is \textit{just hard}. `Some setup required'
+\end{itemize}
+
+
+
+\end{frame}
+\begin{frame}{Essentials: Data}
+
+Don't store \textit{derived data} or \textit{intermediate state} without the recipe
+
+\pause
+
+What is derived data?
+\begin{itemize}
+  \item Wrangled \textit{raw} data, e.g. the processed survey file with just your questions in it
+  \item A thousand web pages scraped from a website
+  \item Graphs and tables
+\end{itemize}
+(Actually the web is a partial exception to this rule: but you still need to keep the download code)
+
+What is derived state? The objects in your local environment
+\begin{itemize}
+  \item things you made from the Console, e.g. \textsf{.RData}
+  \item intermediate computations, e.g. compiled \textsf{Stan} models or \textsf{Rcpp} functions
+\end{itemize}
+
+Why?
+
+\end{frame}
+\begin{frame}{Essentials: Entry points}
+
+A data science project can, and usually does, have several distinct products
+\begin{itemize}
+  \item The analysis itself
+  \item Graphs and tables
+  \item An intermediate report of the analysis
+  \item An academic paper
+  \item Overhead slides
+\end{itemize}
+
+These products should also project \textit{entry points} 
+\begin{itemize}
+  \item Q: ``So, where are we on this project?''
+  \item A: [Knits report]
+\end{itemize}
+
+Ideally you should be able to generate each of them in one step
+
+
+\end{frame}
+\begin{frame}{Essentials: Analysis entry points}
+
+\texttt{script.R} should do \textit{everything} when \texttt{source}d. Assert the dependencies, source other scripts, there
+
+Otherwise you have to remember to do things in the right order
+
+\begin{block}{Scripting}
+Have a script, don't be a script
+\end{block}
+
+\end{frame}
+\begin{frame}{Essentials: Experimentation}
+
+Only \textit{one} script (per product), ever other bit of code should contain \textit{functions, not commands}
+\begin{itemize}
+  \item When something goes wrong you want to debug functions, not dig up scripts
+\end{itemize}
+
+\begin{block}{Debugger}
+Make friends with \texttt{debug}, \texttt{undebug}, and the debugger
+\end{block}
+
+Why? \textit{Damage limitation}
+\begin{itemize}
+  \item Functions (when written right) restrict the information being used to their parameters
+\end{itemize}
+
+
+
+Note: Sometimes they also hold information about the external environment where they were defined too, a.k.a. `enclosures'. Try not to depend on that sort of thing\ldots 
+
+\end{frame}
+
+\begin{frame}{Essentials: Experimentation}
+
+Keep the little experiments in the Console, or in a scratch file.
+\begin{itemize}
+  \item When you like the code, add it to the main script.
+  \item Maybe don't put that stuff in a huge code block in an \texttt{.Rmd} file
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Essentials: Figures and tables}
+
+Have a folder for figures and tables
+\begin{itemize}
+  \item Be ready to overwrite everything there
+\end{itemize}
+One exception: \textsf{RMarkdown} will generate its own transient figure folder, don't bother to mess with that one
+
+\textit{Never} write data tables by hand. Just like you wouldn't write a bibliography by hand (would you?)
+
+Choose a package that formats tables nicely and learn how to use it
+\begin{itemize}
+  \item I like \texttt{texreg} and \texttt{xtable} for Latex and \texttt{kable} for Rmarkdown
+  \item There are probably better choices, but I don't care
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Essentials: Figures and tables}
+
+This is useful even if you \textit{don't} use \texttt{knitr} to make your documents
+
+For example, in the R script
+\begin{verbatim}
+options(xtable.floating = FALSE, latex.environments = "center",
+        xtable.comment = FALSE, xtable.booktabs = TRUE,
+        xtable.caption.placement = "top")
+...
+print(xtable(tbl), file = "tables/tab2.tex) 
+\end{verbatim}
+and in my Latex document:
+\begin{verbatim}
+\input{tables/tab2.tex}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Essentials: Documents}
+  
+Decisions, decisions:
+\begin{itemize}
+  \item Does the analysis code go in the document? (maybe, if \textit{simple} enough)
+  \item Does the table and figure code go in the document? (maybe, if it doesn't take too \textit{long} to run) 
+\end{itemize}
+
+The \href{https://bookdown.org/yihui/rmarkdown-cookbook/cache.html}{RMarkdown cookbook} has a lot of good advice, even if you don't write in \textsf{RMarkdown}
+\begin{itemize}
+  \item Compile early, and compile often\ldots 
+\end{itemize}
+  
+Aside: Got a beautiful slide template? e.g. \texttt{myslides.cls} or a pandoc template \texttt{myslides.tex}.
+\begin{itemize}
+  \item Put that stuff in a folder if you want your friends to use it
+\end{itemize}
+
+  
+\end{frame}
+
+\begin{frame}[fragile]{Essentials: Friends and collaborators}
+
+It's often tempting to set up a project assuming that you will be the only person working on it, e.g. as homework
+
+That's almost never true. 
+\begin{itemize}
+  \item Coauthors happen to the best of us
+  \item Even if not, there's someone else who you always have to keep happy
+\end{itemize}
+
+\pause
+
+Future-you
+\end{frame}
+\begin{frame}[fragile]{Essentials: Friends and collaborators}
+
+Future-you is really the one you do organize your projects for
+
+They are who you use version control for (more on that next week)
+
+Most importantly, they are who will enjoy the fruits of your data science labour, or have to fight back your chaos.
+\begin{itemize}
+  \item So be kind to Future-you. Establish a good workflow. You'll thank yourself later.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\printbibliography
+\end{frame}
+
+\end{document}
+
+

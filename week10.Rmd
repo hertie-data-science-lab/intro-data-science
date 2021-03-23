@@ -1,0 +1,18 @@
+---
+title: "Trouble with Big Data"
+date: "November 19th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session you will (a) appreciate the limitations of biased samples of ‘big data’ for statistical inference, (b) know how to benchmark your code, and (c) understand the basics of parallel processing, spreading your computation across cores of your and/or other machines.
+
+## Required Readings
+
+1. **AdvR**. Chapters 23—25.
+2. Meng, Xiao-Li. 2018. “Statistical Paradises and Paradoxes in Big Data (I): Law of Large Populations, Big Data Paradox, and the 2016 US Presidential Election.” The Annals of Applied Statistics 12(2): 685–726.
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)

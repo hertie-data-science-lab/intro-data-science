@@ -1,0 +1,26 @@
+---
+title: "Text Data"
+date: "October 8th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session you will (a) understand the essential problems of working with text as data and their solutions and (b) have a basic understanding of and ability to apply topic and scaling models, and their manual counterparts
+
+## Required Readings
+
+1. Lucas, Christopher et al. 2013. “Computer Assisted Text Analysis for Comparative Politics.”
+2. Grimmer, J, and B M Stewart. 2013. “Text as Data: The Promise and Pitfalls of Automatic Content Analysis Methods for Political Texts.” *Political Analysis* 21(3): 267–97.
+
+## Optional Readings 
+
+3. Roberts, Margaret E. et al. 2014. “Structural Topic Models for Open-Ended Survey Responses.” *American Journal of Political Science* 58(4): 1064–82.
+4. Proksch, Sven-Oliver, Will Lowe, Jens Wäckerle, and Stuart Soroka. 2019. “Multilingual Sentiment Analysis: A New Approach to Measuring Conflict in Legislative Speeches.” *Legislative Studies Quarterly* 44(1): 97–131.
+5. Slapin, Jonathan B., and Sven-Oliver Proksch. 2008. “A Scaling Model for Estimating Time-Series Party Positions from Texts.” *American Journal of Political Science* 52(3): 705–22.
+6. Silge, Julia, and David Robinson. 2020. *Tidy Text Mining*. O’Reilly Media. https://www.tidytextmining.com/.
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

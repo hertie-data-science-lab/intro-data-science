@@ -1,0 +1,510 @@
+\documentclass{hertieteaching}
+\usepackage{cancel}
+\usepackage{hyperref}
+\graphicspath{{.}{../
+
+\title{Text (as Data)}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{frame}{Why text?}
+
+Applications:
+\begin{itemize}
+  \item Agenda measurement \cite[e.g.][]{Grimmer.etal2011}
+  \item Framing studies \cite[e.g.][]{Gamson.Modigliani1989}
+  \item Authorship attribution \cite[e.g.][]{Mosteller.Wallace1963}
+  \item Bias measurement \cite[e.g.][]{Caliskan.etal2017}
+  \item Policy preference estimation \parencite[e.g.][]{Laver.etal2003}
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Why text?}
+  
+Text data is 
+\begin{itemize}
+  \item ubiquitous
+  \item easily collectable
+  \item informative, even where other behaviour is not
+\end{itemize}
+
+\pause
+
+Nevertheless also
+\begin{itemize}
+  \item awkward to work with
+  \item often strategically generated (or \textit{not} generated)
+  \item difficult to compare across genres, languages, institutions
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Not (just) nlp}
+
+Overlapping NLP tasks
+\begin{itemize}
+  \item Segmentation / tokenization: Locating words and sentences
+  \item Part of Speech (POS) tagging: Associating grammatical
+         roles with words (noun, verb, determiner, preposition, etc.)
+  \item Parsing: grammatical structure from sentences
+\end{itemize}
+Distinctly NLP tasks
+\begin{itemize}
+  \item Named Entity Recognition (NER): Identifying people, places, and things
+  \item Information Extraction (IE): Extracting `facts' (who did what to whom, when)
+\end{itemize}
+
+%Tools:
+%
+%- [Spacy](https://spacy.io) (Python) via `{spacyr}`,
+%  [Stanford NLP tools](https://nlp.stanford.edu/software/),
+%  (Java) via `{CoreNLP}` (or `{cleanNLP}` which wraps both).
+%  Also [OpenNLP](http://opennlp.apache.org/) (Java) via
+%  `{openNLP}`.
+%
+
+\end{frame}
+
+\begin{frame}{Difficult data}
+
+The Zipf-Mandelbrot law \parencite{Zipf1932,Mandelbrot1966}
+$$
+C(W_i) \propto 1/{\text{rank}(W_i)^\alpha}
+$$
+where $\text{rank}(.)$ is the
+frequency \textit{rank} of a word in the vocabulary and
+$\alpha\approx 1$
+
+(This is a Pareto distribution in disguise)
+
+\pause
+
+\bigskip
+Intuition: 
+\begin{itemize}
+  \item Most words occur in \textit{very} low frequencies, while a handful dominate
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Difficult at all scales}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.45\textwidth}
+
+\centerline{\includegraphics[scale=0.7]{pics/allscalesorig}}
+
+%\column{0.1\textwidth}
+\column{0.45\textwidth}
+
+\centerline{\includegraphics[scale=0.7]{pics/allscaleslog}}
+
+\end{columns}
+
+This is a \textit{power law} relationship: see also \textcite{Chater.Brown1999} on scale invariance.
+
+\end{frame}
+
+\begin{frame}{Types and Tokens}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.5\textwidth}
+
+More generally: the Heaps-Herdan Law states that the number of
+word types appearing for the first time after n tokens is
+$$
+D(n) = K n^\beta
+$$
+where $K$ is between 10 and 100 and $\beta \approx 0.5$ for English.
+
+~\\
+
+(All the party manifestos shown here)
+
+\column{0.05\textwidth}
+\column{0.45\textwidth}
+
+\centerline{\includegraphics[scale=0.7]{pics/heaps}}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Frequency and interestingness}
+
+Frequency is inversely proportional to substantive interestingness
+
+~\\
+\begin{columns}[T,onlytextwidth]
+\column{0.33\textwidth}
+
+\begin{center}
+\input{tables/table1}
+
+~\\
+Top 10
+\end{center}
+\column{0.33\textwidth}
+
+
+\begin{center}
+
+\input{tables/table2}
+
+~\\
+Bottom ten
+\end{center}
+
+\column{0.33\textwidth}
+\begin{center}
+\input{tables/table3}
+
+~\\
+Top ten minus \textit{stopwords}
+\end{center}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Stopwords}
+
+Stopwords are a list of words that we think won't be worth keeping track of and will only get in the way of analysis
+\begin{itemize}
+  \item Not outliers (they're usually the most common!)
+  \item Like speech tics and pauses in a speech transcript: `not worth transcribing'
+\end{itemize}
+
+%\centerline{\decorativeflower}
+\bigskip
+Removing \textit{stopwords}, while standard in computer science, is not necessarily better\ldots
+
+Example:
+\begin{itemize}
+\item Standard collections contain, `him', `his', `her' and `she'.
+\item Words you'd want to \textit{keep} when analyzing an abortion debates.
+\end{itemize}
+
+%\centerline{\decorativeflower}
+
+Reminder: `Preprocessing' steps like this are model fitting in disguise
+\end{frame}
+
+\begin{frame}{Bags of words}
+
+One big distinguishing feature of text as data approaches from NLP is the willingness to make \textit{bag of words} assumptions
+
+Formally, the BOW assumption says: words occurrences are \textit{exchangeable}, approximately:
+\begin{itemize}
+  \item Document \textit{content} does not depend on the order of the words
+\end{itemize}
+So \parencite{deFinetti2008} we can model words as independently generated, \textit{conditional on} a message $\theta$
+\begin{align*}
+P(\text{``unemployment is socially corrosive''}) & = P(\{\text{corrosive}, \text{unemployment}, \text{socially}, \text{is}\})\\
+ & = \int\- \prod^{\substack{\{\text{corrosive, is}\\
+   \text{unemployment}\\\text{socially}\}}}_w \-\-P(W=w \mid \theta) P(\theta) \text{d}\theta
+\end{align*}
+
+Clearly this is a better assumption in some genres than others\ldots
+
+\end{frame}
+
+\begin{frame}{The data and the message}
+
+Bags of words are \textit{contingency tables} $C$, or term-document / document-term / document-feature matrices, in the lingo
+
+\begin{center}
+{\small
+\begin{tabular}{rllllllllll}\toprule
+      & corrosive & is & unemployment & socially & a & & \\ \midrule
+doc 1 & 1     & 1  & 2 & 0    & 2    & \ldots & \textcolor{gray}{$\theta_{doc1}$} \\
+doc 2 & 0     & 0  & 1 & 1    & 12    & \ldots & \textcolor{gray}{$\theta_\text{doc2}$} \\ \midrule
+      & \textcolor{gray}{$\beta_\text{corrosive}$}
+      & \textcolor{gray}{$\beta_\text{is}$}
+      & \textcolor{gray}{$\beta_\text{unemployment}$}
+      & \textcolor{gray}{$\beta_\text{socially}$}
+      & \textcolor{gray}{$\beta_\text{a}$} \\ \bottomrule
+\end{tabular}
+}
+\end{center}
+What is $\theta$?
+\begin{itemize}
+  \item A sample of words from a \textit{single} topic (category, subject, etc.): document classification
+  \item A mixed bag of \textit{topics} (categories, emphases, etc.) in particular proportions: topic models and dictionary-based content analysis
+  \item A sample of words from a single \textit{position} in some space: scaling models
+\end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Document classification}
+
+\bigskip
+\centerline{\includegraphics[scale=0.4]{pics/evans-document-classification} } 
+
+From \cite{Evans.etal2007}.
+\end{frame}
+\begin{frame}{Document classification}
+
+Evan et al. try to distinguish Amicus briefs in favour of the defendants or the plaintiffs in two US affirmative action cases
+\begin{itemize}
+  \item Classifier: `Naive Bayes'
+\end{itemize}
+
+This is a \textit{generative} classifier, meaning it tries to learn how words would be generated if you were supporting the defendant vs the plaintiff
+\begin{itemize}
+  \item $P(\{W\} \mid Y =\text{plaintiffs}) = \prod_w^{\{W\}} P(W=w \mid Y =\text{plaintiffs})$
+  \item $P(\{W\} \mid Y =\text{defendants}) = \prod_w^{\{W\}} P(W=w \mid Y =\text{defendants})$
+\end{itemize}
+then \textit{reverses} this using Bayes Theorem to infer
+\begin{itemize}
+  \item Supports the plaintiff: $P(Y =\text{plaintiffs} \mid \{W\})$ 
+  \item Supports the defendants: $1-P(Y =\text{plaintiffs} \mid \{W\})$
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Document classification}
+
+This inefficient: 
+\begin{itemize}
+  \item some words are used at equal rates by both sides, so are useless for distinguishing them
+  \item but they're in the mix anyway, even if just noise
+\end{itemize}
+But conveniently, we get a vocabulary analysis as a side product, e.g.
+$$
+\frac{P(\text{`benign'} \mid Y =\text{plaintiffs})}{P(\text{`benign'} \mid Y =\text{defendants})}
+$$
+Intuition: If this is large then using `benign' \textit{distinguishes} the plaintiffs
+  
+\end{frame}
+\begin{frame}{Document classification}
+
+\bigskip
+\centerline{\includegraphics[scale=0.25]{pics/evansetal1} \includegraphics[scale=0.3]{pics/evansetal2} }  
+
+\bigskip
+In the dictionary, `benign' has a broadly positive valence. In this situation it is quite loaded in favour of the plaintiffs.
+\end{frame}
+
+\begin{frame}{Vocabulary contrasts}
+
+Alternatively, these comparisons may be the focus of a text analysis, not a byproduct
+\begin{itemize}
+  \item The \texttt{quanteda} package calls these differences `keyness'
+\end{itemize}
+For example, here's some comparisons of the words that discriminate 2016 Trump on Twitter, depending on whether the source of the tweet is an iPhone or an Android phone
+\begin{itemize}
+  \item Theory: staff used iPhones and posted campaign messages to his account, he has an Android
+\end{itemize}
+	
+\end{frame}
+\begin{frame}{ANALYZE TWITTER DATA. VOTE!}
+
+\centerline{\includegraphics[scale=0.5]{pics/trumptweets}}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Dictionaries and topic models}
+
+Previously we assumed that documents expressed only one thing, eg. support for the plaintiffs
+
+What if we believed that the message was in the mixture of topics it contained?
+
+Two approaches:
+\begin{itemize}
+  \item Confirmatory, and manual: build a content analysis dictionary
+  \item Exploratory (mostly), and automated: fit a topic model
+\end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Topics}
+
+\medskip
+\centerline{\includegraphics[scale=0.3]{pics/topics2}}
+From \textcite{Blei.etal2003}
+
+\end{frame}
+
+\begin{frame}{Topics}
+
+\medskip
+\centerline{\includegraphics[scale=0.4]{pics/topic-words}}
+From \textcite{Quinn.etal2006}\\
+Note: only the top most probable words are shown and topic labels are manually assigned.
+
+\end{frame}
+
+\begin{frame}{Topics}
+
+\centerline{\includegraphics[scale=0.35]{pics/defence-topic-quinn}}
+
+From \textcite{Quinn.etal2006}
+
+\end{frame}
+
+\begin{frame}{Topic model training}
+
+Topic models can be quite hard and time consuming to estimate. We start with
+\begin{itemize}
+  \item A term document matrix $C$ (the contingency table)
+  \item A belief about the number of topics $K$
+\end{itemize}
+and try to learn
+\begin{itemize}
+  \item a topic label $Z=3$ for each word
+  \item a `dictionary' $\beta_{w3} = P(W=w \mid Z=3)$ for every $w$ and every topic
+  \item the proportion of each topic, e.g. $\theta_3$ in each document
+\end{itemize}
+These are all coupled, and all unknown.
+
+We can help a bit with hyperparameters that give the model a `prior' over $\theta$ and/or over $\beta$
+
+\end{frame}
+
+\begin{frame}{Interpreting topic models}
+
+Ideally we'd like to be able to say: ``make this one about defense''
+
+Unfortunately, that level of high level control is an unsolved problem
+
+We can only -- after the fact -- label the topics, and hope some are topics we want.
+
+
+\end{frame}
+\begin{frame}{Topic model topics}
+
+Are they good, these topics? Ironically
+\begin{itemize}
+  \item the better the \textit{statistical} properties of the model the less interpretable it tends to be \parencite{Chang.etal2009}
+  \item Clearly we're missing something with the model structure\ldots
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Explaining topic prevalence}
+
+Often we want to both measure and explain the prevalence of topic mentions, e.g. the effects of a Japanese electoral reform \parencite{Catalinac2018}
+
+\centerline{\includegraphics[scale=0.4]{pics/jpcontent}}
+	
+\end{frame}
+
+
+\begin{frame}{Structural topic model}
+
+Topic models usually end by presenting us with $\hat{\theta}$ for each document and a dictionary of $\beta$s
+
+If we like some of the topics, we might want to know how they vary with external information, e.g.
+\begin{itemize}
+  \item How does rate of topic 3, say `defence', change with the party of the speaker?
+\end{itemize}
+This is a regression model with 
+\begin{itemize}
+  \item Speaker party indicator $X$ (observed)
+  \item proportion of the speech assigned to topic 3 as $Y^*$ (inferred, not observed)
+  \item Covariates $Z$, e.g. committee membership, date, etc. (observed)
+\end{itemize}
+The \textit{structural topic model} \parencite{Roberts.etal2014} mixes together
+\begin{itemize}
+  \item fitting the topic model
+  \item conditioning its output on the $X$ and $Z$
+\end{itemize}
+Convenient!
+
+
+\end{frame}
+
+\begin{frame}{Structural topic model}
+
+Having a topic model allows us to get contrast vocabulary \textit{within topic} too. 
+
+Here's contrasting usage when talking about Guatanamo Bay in a Bush era data set
+
+\centerline{\includegraphics[scale=0.5]{pics/comparisons-stm}}
+	
+\end{frame}
+\begin{frame}{Scaling}
+
+We can also think about document living in some kind of \textit{space} with $\theta$ as the positione.g.
+\begin{itemize}
+  \item affect, a.k.a. \textit{sentiment analysis}
+  \item unidimensional policy preferences
+  \item multidimensional ideological position
+\end{itemize}
+
+How to place documents in space?
+\begin{itemize}
+  \item Think of a row in the document term matrix as a vocabulary profile, e.g. by normalize the counts
+  \item This is a point in a (very high-dimensional) space
+  \item Which has distances to every other document in that space
+\end{itemize}
+We can, and do, cluster documents this way.
+
+\end{frame}
+
+\begin{frame}{Scaling}
+
+But we can also collapse them down into a smaller space, e.g. one or two dimensions
+\begin{itemize}
+  \item Often we think they really live there
+  \item Sometimes it's just visualization
+\end{itemize}
+
+The model is quite simple. If $C_{ij}$ is the number of times the $j$-th word occurs in the $i$-th document, then, in one dimension
+$$
+\log C_{ij} = \alpha_i + \psi_j + \theta_i\beta_j
+$$
+
+\pause
+
+and in more than $K$ (orthogonal) dimensions
+$$
+\log C_{ij} = \alpha_i + \psi_j + \sum^K_k \theta^{(k)}_i\sigma^{(k)}\beta^{(k)}_j
+$$
+where $\sigma^{(k)}$ is the importance of that dimension to $C$
+
+
+\end{frame}
+
+\begin{frame}{Scaling one dimension}
+
+\centerline{\includegraphics[scale=0.35]{pics/fomc-ip}}
+Estimated FOMC member ideal points from meeting transcripts  \textcite{Baerg.Lowe2020}
+
+\end{frame}
+
+\begin{frame}{Scaling several}
+\vspace{-1em}
+\centerline{\includegraphics[scale=0.45]{pics/grey-just-rile}}
+Post-1989 German party position from CMP-coded platforms
+
+\end{frame}
+
+\begin{frame}{In each other's space}
+\medskip
+\centerline{\includegraphics[scale=.35]{pics/cmpcats_us_in_de}}
+Link: \href{https://www.nytimes.com/interactive/2019/06/26/opinion/sunday/republican-platform-far-right.html}{the pretty version at the New York Times}
+
+\end{frame}
+
+\begin{frame}{Text (as data)}
+
+Lots of possibilities -- ask about them in class!
+	
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\printbibliography	
+\end{frame}
+
+\end{document}

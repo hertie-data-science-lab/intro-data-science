@@ -1,0 +1,864 @@
+\documentclass{hertieteaching}
+\graphicspath{{/Users/wlowe/HertieSchool/courses/intro-data-science/lectures/}{/Users/wlowe/HertieSchool/courses/causal-inference/lectures/}}
+
+\title{Fitting models}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Plan}
+
+\centerline{\includegraphics[scale=0.5]{pics/data-science-model}}
+
+\pause
+
+Model fitting 
+\begin{itemize}
+  \item Chapter IV of \textcite{Wickham.Grolemund2016}
+  \item Lots of good advice in that section
+  \item \ldots which will not age very well
+\end{itemize}
+
+\pause 
+
+This lecture is more about the \textit{big picture}
+
+And the part of model fitting that comes under
+
+\pause
+
+\bigskip
+\centerline{\textsc{Machine Learning}}
+\end{frame}
+
+\begin{frame}{~}
+  
+\centerline{\includegraphics[scale=.35]{pics/spanish-diabolical}} 
+
+\end{frame}
+
+
+
+\begin{frame}{Machine Learning in data science}
+  
+Plan:
+ \begin{itemize}
+  \item Types of machine learning and their models
+  \item Overfitting
+  \item Regularisation
+  \item The bias variance decomposition
+  \item Bayes!
+  \item Model evaluation and loss functions
+\end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Why machine learning}
+
+\ldots not just models?
+
+Machine Learning (ML) is the part of data analysis that 
+focuses on fitting models
+\begin{itemize}
+  \item Many (all?) your familiar statistical models are special cases
+  \item But ML has others too
+  \item It's an almost meaningless term, but it captures the class of things we do fitting models in data science
+\end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Machine learning: rather quickly}
+
+Inference:
+\begin{itemize}
+  \item Supervised: Learn $P(Y \mid X, Z\ldots)$, or often just its expected value (the `regression' function)
+  \item Unsupervised: Learn $P(X, Z)$ (quantitative description)
+\end{itemize}
+
+\pause
+
+Action (embeds an inference problem) 
+\begin{itemize}
+  \item Reinforcement: Learn a policy $P(\text{Action} \mid \text{State})$ such that the expected future discounted \textit{reward} for the policy's actions is maximized 
+\end{itemize}
+
+\pause
+
+We'll be interested in supervised, traditionally separated into 
+\begin{itemize}
+  \item Regression: usually implicitly assumes symmetric constant $\epsilon$ (or doesn't have an opinion\ldots)
+  \item Classification: ambiguous between \textit{choosing} one of $K$ classes and estimating $P(Y=k \mid  X, Z\ldots)$
+\end{itemize}
+In any case, both go for $\ex[Y \mid X, Z\ldots]$
+
+\end{frame}
+
+\begin{frame}{Regression flexibility}
+
+\centerline{\includegraphics[scale=.35]{pics/flexible-reg}}
+  
+\end{frame}
+
+
+\begin{frame}{Classifier flexibility}
+
+Simple models: simple decision boundaries
+
+\centerline{\hfill\includegraphics[scale=.65]{prmlfigs-pdf/Figure1.27a}\hfill\includegraphics[scale=.65]{prmlfigs-pdf/Figure1.27b}\hfill}
+\end{frame}
+
+\begin{frame}{Classifier flexibility}
+
+More flexible models: more complicated decision boundaries
+\medskip
+\centerline{\includegraphics[scale=0.9]{prmlfigs-pdf/Figure5.23a}}
+
+
+\end{frame}
+
+\begin{frame}{Flexibility}
+
+You could, if you like, think of linear regression and logistic regression in each of these categories
+\begin{itemize}
+  \item It's illuminating to do so \parencite[see the first few chapters of][] {Bishop2006}
+\end{itemize}
+
+So what's the ML model difference?
+\begin{itemize}
+  \item More flexible forms for $\ex[Y \mid X, Z\ldots]$
+  \item Higher dimensional predictors, i.e. lots more $X, Z\ldots$
+\end{itemize}
+Many ML regression models will embed a more familiar model, e.g. logistic regression inside neural networks
+
+Others will start from scratch and build $\ex[Y \mid X, Z\ldots]$ differently, e.g. classification trees
+
+
+
+\end{frame}
+
+\begin{frame}{Indifference}
+
+As an engineering tool, ML models will seldom care about what $X, Z$ etc. actually are, or distinguishing one parameter among the others
+
+Indeed most are \textit{non-parametric}
+\begin{itemize}
+  \item Reminder: `non-parametric' does not mean `does not have parameters, it means `has so many parameters that I do not care to know them by name'
+\end{itemize}
+
+Key insight: 
+\begin{itemize}
+  \item It's better to fit an infinitely flexible model and figure out how to constrain it than to fit a too simple model and figure out how to make it fit better
+  \item We may as well \textit{start} with universal function approximators \parencite{Hornik.etal1989}
+\end{itemize}
+
+Key problem: 
+\begin{itemize}
+  \item How to constrain it?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Breaking regression}
+
+What happens when there are more variables than cases?
+\begin{itemize}
+  \item Regular regression breaks
+\end{itemize}
+What happens when you add all the squares and cubes and interactions as predictors?
+\begin{itemize}
+  \item Standard errors explode; same amount of data, but more parameters to learn from it.
+  \item Generalization to new data gets worse; now we can fit everything better, we fit noise better
+\end{itemize}
+These are the same problem in different degrees
+
+\end{frame}
+
+\begin{frame}{The problem, with polynomials}
+
+\medskip
+\centerline{\includegraphics[scale=0.8]{prmlfigs-pdf/Figure1.2.pdf}}
+
+For consistency with Bishop ch. 1 let's call
+\begin{itemize}
+  \item the outcome $t_n$ 
+  \item the regression coefficients $w_j \in \textbf{w}$ (`weights')
+  \item our estimate of the expected value of $t_n$, $\hat{t}_n = y(x, \textbf{w})$
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Adding flexibility}
+
+Consider polynomial models of $t$. We'll fit / make predictions like this:
+\begin{align*}
+y(x, \textbf{w}) & ~=~ w_0\\
+                 & ~=~ w_0 + w_1 x \\
+                 & ~=~ w_0 + w_1 x + w_2 x^2\\
+                 & ~=~ w_0 + w_1 x + w_2 x^2 + \cdots + w_M x^M \\
+                 & ~=~ \sum^{M}_j w_j x^j 
+\end{align*}
+
+\pause
+
+The \textit{flexibility} of this model is driven by $M$, which we can think of as determining the model class 
+\begin{itemize}
+  \item Roughly: the set of functions that can be represented
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Adding flexibility}
+
+\medskip
+
+\centerline{\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.4a.pdf}\hspace{5em}\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.4b.pdf}}
+
+\centerline{\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.4c.pdf}\hspace{5em}\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.4d.pdf}}
+
+Big weights needed to get \textit{really} close to each point.
+
+\end{frame}
+
+\begin{frame}{Adding flexibility}
+
+\medskip
+\centerline{\includegraphics[scale=0.6]{pics/polynomialcoef}}
+
+\end{frame}
+
+\begin{frame}{Overfitting}
+
+Things are not so bad when there is more data (here M=9)
+
+\medskip
+\centerline{\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.6a.pdf}\hspace{5em}\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.6b.pdf}}
+
+But there isn't always going to be more data\ldots
+
+\pause
+
+However, we can keep all M, i.e. maintain the flexibility in the model class, \textit{if} we can constrain the size of the weights 
+\begin{itemize}
+  \item This calls for a \textit{hyperparameter}, a parameter that controls other parameters
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Overfitting}
+
+\medskip
+\centerline{\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.6a.pdf}\hspace{5em}\includegraphics[scale=0.6]{prmlfigs-pdf/Figure1.6b.pdf}}
+
+When there's lots of persuasive data: 
+\begin{itemize}
+  \item override the hyperparameter and make use of the model flexibility
+\end{itemize}
+When there isn't,
+\begin{itemize}
+  \item keep weights small, and therefore the function smooth
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Regularization by hyperparameter}
+
+Here, we're fitting the model (maximizing the likelihood) using OLS, which \textit{minimises} the sum of squared errors  
+$$
+E_\text{OLS} ~=~ \frac{1}{2}\sum^{N}_n (y(x_n, \textbf{w}) - t_n)^2
+$$
+Note: minimising error rather than maximizing the likelihood is the way ML people think about things (hence, no minus sign)\footnote{The 1/2 is there to hint that this is the log likelihood for a Normal distribution (with constant error variance, so it doesn't matter to $E$)}
+
+\pause
+
+Let's keep that plan, but add an extra term to control the weights
+$$
+E_{\lambda} ~=~ \frac{1}{2}\sum^{N}_n (y(x_n, \textbf{w}) - t_n)^2 ~+~ \frac{\lambda}{2} \sum^{M}_m w_m^2
+$$
+and a hyperparameter $\lambda$ to say how seriously we should take it as an error component
+
+\end{frame}
+
+\begin{frame}{Consequences}
+\bigskip
+\centerline{\includegraphics[scale=0.7]{prmlfigs-pdf/Figure1.7a.pdf}\hspace{5em}\includegraphics[scale=0.7]{prmlfigs-pdf/Figure1.7b.pdf}}
+
+\end{frame}
+
+
+\begin{frame}{The sweet spot}
+
+\medskip
+\centerline{\includegraphics[scale=0.8]{prmlfigs-pdf/Figure1.8.pdf}}
+
+
+\begin{itemize}
+  \item The left extreme is $\lambda =0$ (no regularization)
+  \item The right extreme is all zero weights (predict of 0 for every point)
+  \item With fixed data, decreasing $\lambda$ allows more of the model class's inherent flexibility to show
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Choosing hyperparameter values}
+
+We can't fit $\lambda$ by minimising the sum of squares
+\begin{itemize}
+  \item That would just set it to zero (why?)
+\end{itemize}
+\pause
+
+\medskip
+\begin{columns}[T,onlytextwidth]
+\column{0.5\textwidth}
+
+One reliable option is crossvalidation (CV)
+\begin{itemize}
+  \item Make a grid of hyperparameter values
+  \item Randomly divide the data set into 4 (or some other value $>$ 1)
+  \item For each hyperparameter  value, train a model on white and test on red
+  \item Choose the hyperparameter value that minimizes the average error on reds
+\end{itemize}
+\column{0.05\textwidth}
+\column{0.45\textwidth}
+\medskip
+\centerline{\includegraphics[scale=1]{prmlfigs-pdf/Figure1.18.pdf}}
+
+\end{columns}
+
+
+
+
+
+
+\end{frame}
+
+
+%\begin{frame}{General theory: Bias-Variance}
+%
+%One important question we can ask is about the expected value of $E$, averaged over \textit{all possible data sets} coming from the same mechanisms
+%
+%First, let's give $\ex[t \mid x]$ (the \textit{real} regression function) a name 
+%$$
+%h(x) = \ex[t \mid x]
+%$$
+%and define $\ex_D$ as an average over all possible data sets
+%
+%Then (Bishop, sec. 1.5.5 and 3.2 for a derivation) we can decompose the expected error into 
+%\begin{align*}
+%\text{bias}^2 &~~ \int \ex_D[(y(x, \textbf{w}) - h(x))^2]\, p(x) \text{d}x \\
+%\text{variance} &~~ \int \ex_D[(y(x, \textbf{w}) - \ex_D[y(x, \textbf{w})])^2] \,p(x) \text{d}x \\
+%\text{noise} &~~ \int (h(x) - t)^2\, p(x, t)\, \text{d}x\,\text{dt}
+%\end{align*}
+%
+%\end{frame}
+
+
+\begin{frame}{Bias and Variance}
+
+\bigskip
+%\centerline{\includegraphics[scale=1]{prmlfigs-pdf/Figure3.8a.pdf}}
+
+\centerline{\includegraphics[scale=1]{prmlfigs-pdf/Figure3.6.pdf}}
+
+\centerline{Error is unavoidable but bias and variance trade off}
+\end{frame}
+
+
+%%%%%%% Bayes here
+
+\begin{frame}{Thinking about Inference}
+
+Let's revisit this tricky looking error function
+$$
+E_{\lambda} ~=~ \frac{1}{2}\sum^{N}_n (y(x_n, \textbf{w}) - t_n)^2 ~+~ \frac{\lambda}{2} \sum^{M}_m w_m^2
+$$
+We motivated this by saying that minimizing it kept the weights small, which kept the function smooth.
+
+There's another way to motivate it: as a \textit{Bayesian inference}
+
+\pause
+
+Bayesian inference is a theory of \textit{learning under uncertainty}, mostly normative but in many interesting cases also descriptive, and a very popular way to `fit' a model.
+
+\end{frame}
+
+\begin{frame}{Bayes for model fitting}
+
+Conceptually simple: 
+\begin{itemize}
+  \item Just use probability theory for everything
+\end{itemize}
+Practically often quite hard!
+
+\pause
+
+Recall Bayes theorem
+\begin{align*}
+P(\mathbf{w} \mid \mathbf{x}, \mathbf{t})  & = \frac{P(\mathbf{t} \mid \mathbf{x}, \mathbf{w})P(\mathbf{w}\mid \mathbf{x})}
+          {P(\mathbf{t} \mid \mathbf{x})}\\
+\intertext{but $\mathbf{w}$ doesn't depend on $X$, so we'll drop that conditioning}
+P(\mathbf{w} \mid \mathbf{x}, \mathbf{t})  & = \frac{P(\mathbf{t} \mid \mathbf{x}, \mathbf{w})P(\mathbf{w})}
+          {P(\mathbf{t} \mid \mathbf{x})}
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Bayesian inference for model parameters}
+
+\begin{align*}
+P(\mathbf{w} \mid \mathbf{x}, \mathbf{t})  & = \frac{P(\mathbf{t} \mid \mathbf{x}, \mathbf{w})P(\mathbf{w})}
+          {P(\mathbf{t} \mid \mathbf{x})}
+\end{align*}
+The \textit{prior:} the distribution of plausible values for the weights
+\begin{itemize}
+  \item  $P(\mathbf{w})$
+\end{itemize}
+The \textit{likelihood}: how the data is made, assuming we have values for the weights
+\begin{itemize}
+  \item $P(\mathbf{t} \mid \mathbf{x}, \mathbf{w})$
+\end{itemize}
+The \textit{posterior}: the distribution of plausible values for the weights, in the light of the data
+\begin{itemize}
+\item $P(\mathbf{w} \mid \mathbf{x}, \mathbf{t})$ 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Some candidate distributions}
+
+Assume everything is Normal distributed with constant variance\ldots \pause
+\begin{align*}
+P(\mathbf{w}) & \propto \exp \left(-\sum^{9}_n \frac{\alpha}{2} w_n^2\right) & \text{Normal with zero mean, and variance $\alpha^{-1}$} \\
+\intertext{Assuming independent data points, we can do the same for the $t$s}
+P(\mathbf{t} \mid \mathbf{x}, \mathbf{w}) &\propto \exp \left( -\sum^{N}_n \frac{\beta}{2} (y(x_n, \mathbf{w})-t_n)^2 \right)
+\end{align*}
+which is Normal with mean $y(x_n, \mathbf{w})$ and variance $\beta^{-1}$
+
+The \textit{posterior} distribution for $\mathbf{w}$ is just these two multiplied together and divided by a constant
+\begin{itemize}
+  \item So one way to estimate the best set of $\mathbf{w}$ is the choose the ones that have maximum posterior probability (MAP)
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Inference for the parameters}
+
+\begin{align*}
+P(\mathbf{t} \mid \mathbf{x}, \mathbf{w}) &\propto \exp \left( -\sum^{N}_n \frac{\beta}{2} (y(x_n, \mathbf{w})-t_n)^2 \right) &
+P(\mathbf{w}) & \propto \exp \left(-\sum^{9}_n \frac{\alpha}{2} w_n^2\right) 
+\end{align*}
+
+Another way to do the same thing is to maximize the \textit{log} of the posterior distribution
+\begin{align*}
+\log P(\mathbf{w} \mid \mathbf{x}, \mathbf{t}) &\propto \log \left(P(\mathbf{t} \mid \mathbf{x}, \mathbf{w})~P(\mathbf{w})\right) \\
+      &\propto  \log P(\mathbf{t} \mid \mathbf{x}, \mathbf{w}) + \log P(\mathbf{w})\\
+      & \propto -\left[ \sum^{N}_n \frac{1}{2} (y(x_n, \mathbf{w})-t_n)^2 ~+~ \sum^{9}_n \frac{\lambda}{2} w_n^2 \right]\\
+      & = -E_\lambda
+\end{align*}
+which is the same as \textit{minimising} $E_\lambda$ when $\lambda  = \alpha/\beta$
+
+\end{frame}
+
+
+%%%%%%% end of Bayes
+
+
+%\begin{frame}{Model bias}
+%
+%Informally, the \textit{bias} of a model class is the set of functions that a model most naturally learns
+%\begin{itemize}
+%  \item Linear models (M=1 above): can learn straight lines
+%  \item Quadratic models (M=2 above): \textit{can} learn straight lines but also smooth curves 
+%  \item etc.
+%\end{itemize}
+%
+%We can get different sorts of bias by changing the whole model class
+%\begin{itemize}
+%  \item we'll see an example of later with trees
+%\end{itemize}
+%
+%Regularization also offers us some interesting and different forms 
+%
+%\end{frame}
+
+%\begin{frame}{Model bias}
+%\medskip
+%\centerline{\includegraphics[scale=1]{prmlfigs-pdf/Figure3.15.pdf}}
+%\end{frame}
+
+\begin{frame}{Model bias}
+\medskip
+\centerline{\includegraphics[scale=.7]{prmlfigs-pdf/Figure3.15.pdf}}
+
+\begin{itemize}
+  \item $\textbf{w}_\text{ML}$ minimizes $E_{\lambda=0} = E_\text{OLS}$
+  \item The origin minimizes $E_{\lambda=\infty}$
+  \item $\textbf{w}_\text{MAP}$ minimizes $E_\lambda$ when we set $\lambda$ sensibly to balance the two parts of the error function
+  \item Alternatively, the information source we are more confident about (Bayes)
+\end{itemize}
+
+\end{frame}
+%\begin{frame}{Model bias}
+%\medskip
+%\centerline{\includegraphics[scale=.7]{prmlfigs-pdf/Figure3.15.pdf}}
+%
+%\begin{itemize}
+%  \item This bias \textit{shrinks} all the weights, some more than others
+%  \item It is sometimes helpful to define an \textit{effective} number of parameters, which is less than M, and possibly fractional
+%\end{itemize}
+%
+%\end{frame}
+
+%\begin{frame}{A different model bias}
+%
+%If we change the regularization term just a little (note the $q$)
+%$$
+%E_{\lambda} ~=~ \frac{1}{2}\sum^{N}_n (y(x_n, \textbf{w}) - t_n)^2 ~+~ \frac{\lambda}{2} \sum^{M}_m |w_m|^q
+%$$
+%\pause
+%\medskip
+%
+%\centerline{\hfill$q=2$\hspace{14em}$q=1$\hfill}
+%
+%\centerline{\includegraphics[scale=.6]{prmlfigs-pdf/Figure3.4a}\hspace{8em}\includegraphics[scale=.6]{prmlfigs-pdf/Figure3.4b}}
+%
+%\centerline{\hfill (L2 regularization a.k.a. `ridge regression')\hspace{2em}(L1 regularization, a.k.a. `the lasso')\hfill}
+%
+%\end{frame}
+%
+
+\begin{frame}{Inference for everything else}
+
+So we've got a whole posterior distribution over $\mathbf{w}$
+\begin{itemize}
+  \item Or just the very peak of it if we want to assign a definite value to each weight
+\end{itemize}
+
+But that also means we've got an \textit{implied} posterior distribution for everything that depends on $\mathbf{w}$
+\begin{itemize}
+  \item the probability that $w_3 > w_2$ or any other arbitrary relationship
+  \item predictions from new (or old) $\mathbf{x}$
+\end{itemize}
+
+Do we need to do more math to figure out what it is? Not if we can get a \textit{sample} from the posterior
+\begin{align*}
+t_{n+1} &\sim \int P(t_{n+1} \mid x_{n+1}, \mathbf{w}) P(\mathbf{w} \mid \mathbf{x}, \mathbf{t}) \,d\mathbf{w} \\
+\intertext{but with a $S$ samples $\mathbf{w}^{(i)}$  from $P(\mathbf{w} \mid \mathbf{x}, \mathbf{t})$}
+\text{E}[t_{n+1}] & = \frac{1}{S} \sum^{S}_i P(t_{n+1} \mid x_{n+1}, \mathbf{w}^{(s)}) 
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Neural networks}
+
+\centerline{\includegraphics[scale=0.25]{pics/mlp}}
+
+A multilayer perceptron (MLP) with 1 hidden layer f $J$ `units' for $D$-dimensional input data $x$ is
+$$
+y(x, \textbf{w}) ~=~ \sum_j^J w_j \phi_j(x, \textbf{w}^{(j)})
+$$
+where $\phi_j$ is some nonlinear function of the input data, e.g.
+$$
+\phi_j(x, \textbf{w}^{(j)}) = 1/(1+\exp(-\sum_d w^{(j)}_{d} x_{d})
+$$
+\textit{That's} a universal approximator \parencite{Hornik.etal1989} that needs serious regularization
+
+\end{frame}
+
+
+\begin{frame}[fragile]{And now for something totally different}
+
+Alternatively, we can change the definition of $P(t \mid x, \textbf{w})$ altogether, e.g. regression trees (from \href{https://scikit-learn.org/stable/auto_examples/tree/plot_iris_dtc.html}{scikit-learn} documentation)
+
+\begin{columns}[T,onlytextwidth]
+\column{0.5\textwidth}
+
+\centerline{\includegraphics[scale=0.45]{pics/regression-tree}}
+
+\column{0.05\textwidth}
+\column{0.45\textwidth}
+
+\bigskip
+\medskip
+Blue tree (2 levels)
+\begin{verbatim}
+if x > 3.2 then 
+  if x > 3.9 then -0.9 else -0.5
+else
+  if x > 0.5 then 0.8 else 0.1
+\end{verbatim}
+
+\medskip
+The green tree allows up to 5 levels, and overfits
+
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Regression trees}
+
+For regression trees, $\mathbf{w}$ are now the split positions and (one) hyperparameter is the depth of the tree
+\begin{itemize}
+  \item so constraining that adds bias and reduces variance
+\end{itemize}
+In general we can also prevent overfitting by bagging \parencite{Breiman1996} or variations on that theme \parencite[e.g. Random forests][]{Cutler.etal2012}
+\begin{itemize}
+  \item bootstrapping the dataset
+  \item Fitting trees to each bootstrap sample
+  \item Averaging the resulting predictions
+\end{itemize}
+
+\pause 
+
+Or we can be Bayesians again \parencite[e.g.][BART]{Chipman.etal2010a}
+\begin{itemize}
+  \item Start with a prior forest
+  \item See the data 
+  \item Prune down to a posterior forest
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Bias as a good thing}
+
+Clearly regularization generates bias. Seems like a bad thing\ldots
+
+But it's necessary
+\begin{itemize}
+  \item All models are wrong; some are useful
+  \item The \textit{No Free Lunch theorem} \parencite{Wolpert1996a} says that averaged over all possible problems, no learning algorithm is better than any other
+  \item Happily we don't deal with all possible problems, so we can and should choose a model bias to fit the problem
+\end{itemize} 
+And helpful
+\begin{itemize}
+  \item It's how we get less variance
+\end{itemize} 
+And annoying because it slows convergence 
+
+This is better than the alternative, which is not being consistent and not knowing it
+
+\end{frame}
+
+%\begin{frame}{Bias and variance in ML}
+%
+%ML insight: 
+%\begin{itemize}
+%  \item It's better to working with a universal function approximator, and figure out how to regularize it, than to work with a model that can't represent much of anything and hope
+%  \item Most of the ML methods we'll work with are universal approximators
+%  \item Linear regression\ldots definitely not.
+%\end{itemize}
+%\pause
+%
+%But wait, how did all that regularization business turn $y(x, \textbf{w})$ into a universal approxiator?
+%\begin{itemize}
+%  \item It didn't. We just didn't say much about $y(x, \textbf{w})$ and drew it like it was in a linear regression context
+%\end{itemize}
+%In real applications, $y(x, \textbf{w})$ is not even polynomial regression
+%\begin{itemize}
+%  \item It's \textit{kernel regression}, or \textit{basis function} regression, \textit{neural network}, \textit{random forest}, etc.
+%
+%\end{itemize}
+%
+%\end{frame}
+%
+%
+%\begin{frame}{ML models}
+%
+%We've some really flexible models with interesting different types
+%of bias (smooth, piecewise linear) and styles of regularization (L1, L2, depth constraints)
+%
+%Let's go right back to the beginning
+%\begin{itemize}
+%  \item Good old multiple linear regression
+%\end{itemize}
+%\pause
+%
+%\end{frame}
+
+%%%%%%%%%% classification section 
+
+\begin{frame}{Model evaluation}
+
+Strategy:
+\begin{itemize}
+  \item Out-of-sample testing is the gold standard
+  \item In-sample fit is\ldots ok
+  \item Cross-validation is better
+\end{itemize}
+Tactics: operationalising performance
+\begin{itemize}
+  \item For regression models: Mean squared error is a common standard
+  \item Expected utility is also possible but requires a \textit{loss function}
+  \item often obviously important for classification tasks
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Classification}
+
+We've been assuming a regression context for out ML so far, but we can also think about classification
+
+Reminder: classification is two things, often confused. In a simple two class (0/1) classification 
+\begin{itemize}
+  \item Estimating $E(Y \mid X_1 \ldots X_K) = P(Y=1 \mid X_1 \ldots X_K)$
+  \item Deciding 1 or 0 in the light of $P(Y=1 \mid X_1 \ldots X_K)$
+\end{itemize}
+
+Implicitly you may be used to deciding 1 if $P(Y=1 \mid X_1 \ldots X_K) > 0.5$ 
+
+However, it is often more costly to mistake a 1 for a 0 than a 0 for a 1, e.g.
+\begin{itemize}
+  \item 1 means a state will collapse in the next year \parencite[e.g.][]{King.Zeng2001a}
+  \item The losses are far from equal
+  \item Intuitively we should require lower probability to choose 1 when mistaking 1 for 0 is very costly  
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Classification}
+
+Decision theory:
+\begin{itemize}
+  \item $L_{ij}$ is the cost of mistaking $i$ for $j$ e.g. $L_{10}$ is the cost of mistaking a 1 for a 0
+  \item Minimize the expected $L$ by choosing the $i$ that minimizes
+$$
+\sum_j L_{ij} P(Y=i \mid X_1 \ldots X_K)
+$$
+\end{itemize}
+
+For 1/0 decisions another way to put this is in terms of a cutoff: Choose
+$$
+\hat{Y} = 
+\begin{cases}
+    1~&~ \text{if } P(Y=1	 \mid X_1 \ldots X_K) > \frac{1}{1+C} \\
+    0~&~ \text{otherwise}\\
+\end{cases}
+$$
+where
+$$
+C  = \frac{L_{10}}{L_{01}}
+$$
+
+\end{frame}
+\begin{frame}{Classification errors}
+
+From the loss function we can also identify two sorts of error
+\begin{itemize}
+  \item Mistaking a 1 for a 0: $P(\hat{Y}=0 \mid Y=1)$
+  \item Mistaking a 0 for a 1: $P(\hat{Y}=1 \mid Y=0)$
+\end{itemize}
+A useful and closely related pair of quantities are
+\begin{align*}
+P(\hat{Y}=1 \mid Y=1) & ~=~ 1-P(\hat{Y}=0 \mid Y=1) & \text{(recall)}\\
+P(Y=1 \mid \hat{Y}=1) & ~=~ \frac{P(\hat{Y}=1 \mid Y=1)P(Y=1)}{P(\hat{Y}=1)} & \text{(precision)}
+\end{align*}
+Varying $C$ expresses a tradeoff between these too
+\begin{itemize}
+  \item High $C$ lowers the cutoff, which increases recall but decreases precision
+  \item Low $C$ raises the cutoff which increases precision but decreases recall
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Unknown losses, unknown tradeoffs}
+	
+Sometimes we don't have (or can't commit to) some loss matrix $L$  or a prefered balance between precision and recall
+
+However, since each value of $C$ implies such a loss / balance, we can ask how well a classifier does for \textit{all possible} cutoffs
+
+Traditionally we plot precision and recall in a \textit{Receiver Operating Characteristic} (ROC) curve for a wide range of cutoffs
+
+Warning:
+\begin{itemize}
+  \item All these things are related, so some authors prefer different pairs of performance quantities [sigh]
+\end{itemize}
+Traditionally, ROC curves plot recall and 1-precision
+\end{frame}
+
+\begin{frame}{Receiver Operating Characteristic curves}
+
+\centerline{\includegraphics[scale=2]{pics/roc-wikipedia.png}}
+
+\end{frame}
+
+
+
+
+\begin{frame}{roc and calibration}
+
+\centerline{\includegraphics[scale=0.5]{pics/king-zeng-roc-calibration}}
+
+\end{frame}
+
+\begin{frame}{Model fitting in data science}
+  
+Plan:
+ \begin{itemize}
+  \item Types of machine learning
+  \item Overfitting is the problem
+  \item Regularization as the cure
+  \item Bias-variance decomposition applies everywhere
+  \item Bayes, now you know you want to
+  \item Model evaluation is not optional!
+\end{itemize}
+ 
+\end{frame}
+
+
+%\begin{frame}{Decision boundaries}
+%	
+%\textit{However} we decide to set this threshold	 a classification model partitions $X_1 \ldots X_K$ into regions, based on what it would assign Y
+%
+%\centerline{\hfill\includegraphics[scale=.65]{prmlfigs-pdf/Figure1.27a}\hfill\includegraphics[scale=.65]{prmlfigs-pdf/Figure1.27b}\hfill}
+%Simple models generate simple decision boundaries
+%
+%	
+%\end{frame}
+%	
+%\begin{frame}{Decision boundaries}
+%
+%\medskip
+%\centerline{\includegraphics[scale=0.9]{prmlfigs-pdf/Figure5.23a}}
+%
+%More complex models generate more complex decision boundaries
+%\begin{itemize}
+%  \item and need regularizing more carefully
+%\end{itemize}
+%
+%\end{frame}
+%
+%\begin{frame}{Decision boundaries}
+%
+%The bias of a classifier determines the shape of the boundaries it can make
+%\begin{itemize}
+%  \item Linear models, e.g. additive logistic regression can make straight dividing lines
+%  \item Neural networks make smooth curves
+%\end{itemize}
+%Both focus on learning a function
+%\pause
+%Alternatively we can \textit{ask the data}, e.g. the 
+%k-nearest neighbour classifier (for 0/1 classificatin):
+%\begin{itemize}
+%  \item Takes your new data point
+%  \item Finds the $k$ nearest training observations it has seen
+%  \item Asks each training observation for its class
+%  \item Returns the proportion of those cases that were $Y=1$
+%\end{itemize}
+%This is not great
+%\begin{itemize}
+%  \item but weirdly never more than twice as bad as the best possible classifier
+%\end{itemize}
+%
+%\end{frame}
+%
+%
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\printbibliography	
+\end{frame}
+
+\end{document}

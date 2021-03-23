@@ -1,0 +1,25 @@
+---
+title: "Version Control and Coding Style"
+date: "September 17th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have learned about the virtues of a robust version control workflow , (b) have learned the basics of functional programming to support an efficient coding style, and (c) are able to implement that workflow with Git and GitHub.
+
+## Required Readings
+
+1. Bryan, Jenny and Jim Hester. (2018). Happy Git and GitHub for the user. https://happygitwithr.com/
+2. Wickham, Hadley. The tidyverse style guide. https://style.tidyverse.org/
+3. Bryan, Jenny. Stat545, Chapters 17-21 (R as a programming Language). https://stat545.com/r-objects.html
+  
+## Optional Readings 
+
+4. **AdvR**. Chapters 6—11.
+5. Wickham, H. (2015). *R Packages*. O’Reilly Media. Chapter 13 (Git and GitHub). http://r-pkgs.had.co.nz/git.html
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

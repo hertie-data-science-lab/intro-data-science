@@ -1,0 +1,57 @@
+code,name,rile.valence
+per101,Foreign Special Relationships: Positive,0
+per102,Foreign Special Relationships: Negative,0
+per103,Anti-Imperialism: Positive,-1
+per104,Military: Positive,1
+per105,Military: Negative,-1
+per106,Peace: Positive,-1
+per107,Internationalism: Positive,-1
+per108,European Community/Union: Positive,0
+per109,Internationalism: Negative,0
+per110,European Community/Union: Negative,0
+per201,Freedom and Human Rights,1
+per202,Democracy,-1
+per203,Constitutionalism: Positive,1
+per204,Constitutionalism: Negative,0
+per301,Decentralisation,0
+per302,Centralisation,0
+per303,Governmental and Administrative Efficiency,0
+per304,Political Corruption,0
+per305,Political Authority,1
+per401,Free Enterprise,1
+per402,Incentives,1
+per403,Market Regulation,-1
+per404,Economic Planning,-1
+per405,Corporatism,0
+per406,Protectionism: Positive,-1
+per407,Protectionism: Negative,1
+per408,Economic Goals,0
+per409,Keynesian Demand Management,0
+per410,Productivity,0
+per411,Technology and Infrastructure,0
+per412,Controlled Economy,-1
+per413,Nationalisation,-1
+per414,Economic Orthodoxy,1
+per415,Marxist Analysis,0
+per416,Anti-Growth Economy: Positive,0
+per501,Environmental Protection,0
+per502,Culture,0
+per503,Social Justice,0
+per504,Welfare State Expansion,-1
+per505,Welfare State Limitation,1
+per506,Education Expansion,-1
+per507,Education Limitation,0
+per601,National Way of Life: Positive,1
+per602,National Way of Life: Negative,0
+per603,Traditional Morality: Positive,1
+per604,Traditional Morality: Negative,0
+per605,Law and Order,1
+per606,Social Harmony,1
+per607,Multiculturalism: Positive,0
+per608,Multiculturalism: Negative,0
+per701,Labour Groups: Positive,-1
+per702,Labour Groups: Negative,0
+per703,Farmers,0
+per704,Middle Class and Professional Groups,0
+per705,Underprivileged Minority Groups,0
+per706,Non-economic Demographic Groups,0

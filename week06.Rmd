@@ -1,0 +1,24 @@
+---
+title: "Web Data"
+date: "October 15th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have acquired basic knowledge of web technologies, (b) are able to scrape information from static and dynamic websites using R, and (c) are able to access web services (APIs) with R.
+
+## Required Readings
+
+1. 1. Munzert, Simon, Christian Rubba, Peter Meißner, and Dominic Nyhuis, 2015: *Automated Data Collection with R. A Practical Guide to Web Scraping and Text Mining*. Chichester: John Wiley & Sons. Chapters 2 (HTML), 3 (XML and JSON), 4 (XPath), 5 (HTTP), 6 (AJAX), 9 (Scraping the Web)
+
+## Optional Readings 
+
+2. https://cran.r-project.org/web/views/WebTechnologies.html
+3. https://github.com/tidyverse/rvest
+4. https://github.com/jeroen/jsonlite
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

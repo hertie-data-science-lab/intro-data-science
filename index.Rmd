@@ -1,0 +1,76 @@
+---
+title: "Introduction to Data Science"
+description: |
+  Data! Science!  What's not to like?
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+```
+
+&nbsp;
+------------------------------ ------------------------------- 
+**Instructors**:                [Dr. William E. M. Lowe](mailto:lowe@hertie-school.org) and [Prof. Simon Munzert](mailto:munzert@hertie-school.org)
+**Office**:                    Room 3.14 (WL) and Room 3.13.1 (SM)
+**Office Hours**               By arrangement. Email the instructors directly.
+**Class Times**                Thursdays 14:00-16:00
+---------------------------------------------------------------
+
+### Sessions
+
+              Date        Title                                                   Instructor
+------------- ----------- ------------------------------------------------------- ------------
+**1**         10.09.2020  [Overview and Basic Workflow](week01.html)               Will
+**2**         17.09.2020  [Version Control and Coding Style](week02.html)           Simon
+**3**         24.09.2020  [Relationally Structured Data](week03.html)              Will
+                          *Assignment 1 out*
+**4**         01.10.2020  [Spatial Data](week04.html)                              Simon
+                          *Assignment 2 out*
+**5**         08.10.2020  [Text Data](week05.html)                                 Will
+                          *Assignment 3 out*
+**6**         15.10.2020  [Web Data](week06.html)                                  Simon
+                          *Assignment 4 out*
+                          &nbsp;
+**7**         29.10.2020  [Experimental and Crowdsourced Data](week07.html)        Simon
+**8**         05.11.2020  [Fitting Models](week08.html)                            Will
+**9**         12.11.2020  [Visualization](week09.html)                             Simon
+**10**        19.11.2020  [Trouble with Big Data](week10.html)                     Will
+**11**        26.11.2020  [Debugging, Automation, and Packaging](week11.html)      Simon
+                          *Assignment 5 out*
+**12**        03.12.2020  [Special Topics](week12.html)                            Will
+              14.12.2020  *Final Exam Week*
+----------------------------------------------------------------------------------------------
+
+
+## General Readings
+
+- **R4DS** Grolemund, G., & Wickham, H. (2018). [R for Data Science](https://r4ds.had.co.nz/). 
+ O'Reilly.
+ 
+- **AdvR** Wickham, H. (2019). [Advanced R](https://adv-r.hadley.nz/). CRC Press.
+ 
+ 
+## Online Resources
+
+-  Jenny Bryan [STAT 545: Data wrangling, exploration, and analysis with R](https://stat545.com)
+
+-  Mine Cetinkaya-Rundel [STA 199: Intro to data science](http://www2.stat.duke.edu/courses/Spring18/Sta199/)
+
+- RStudio [Data science in a box]( https://datasciencebox.org/)
+
+- Greg Wilson [R for Data Science Instructor's Guide](https://github.com/rstudio-education/r4ds-instructors)
+
+- Garrett Grolemund [Hands-On Programming with R](https://rstudio-education.github.io/hopr)
+
+- Hadley Wickham [R Packages](http://r-pkgs.had.co.nz/)
+
+- Edwin Thoen [Agile Data Science with R](https://edwinth.github.io/ADSwR/index.html)
+
+- Colin Rundel [Statistical Programming](http://www2.stat.duke.edu/~cr173/Sta523_Fa17)
+
+

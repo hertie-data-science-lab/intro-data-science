@@ -1,0 +1,24 @@
+---
+title: "Experimental and Crowdsourced Data"
+date: "October 29th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have learned the basics about setting up and monitoring experimental analyses using R and (b) are able to design your own experiments and crowdsourced tasks online.
+
+## Required Readings
+
+1. Amazon Mechanical Turk Developer Guide. https://tinyurl.com/mturk-guide.
+2. Prolific Getting Started. https://researcher-help.prolific.co/hc/en-gb/categories/360002553779-Getting-started
+
+## Optional Readings 
+
+3. CRAN Task View: Design of Experiments (DoE) & Analysis of Experimental Data. https://cran.r-project.org/web/views/ExperimentalDesign.html
+4. DeclareDesign. https://declaredesign.org/
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

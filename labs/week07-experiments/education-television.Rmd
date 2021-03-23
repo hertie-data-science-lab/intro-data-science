@@ -1,0 +1,211 @@
+---
+title: "Effects of Educational Television"
+output: pdf_document
+header-includes:
+  - \usepackage[sc]{mathpazo}
+  - \renewcommand{\rmdefault}{pplx}
+  - \linespread{1.1}
+---
+
+In this exercise we're going to look at the effect on reading scores of a educational television program [The Electric Company](https://en.wikipedia.org/wiki/The_Electric_Company) that ran from 1971-77.
+
+It was a fairly expensive show. We'll ask what reading gains, if any, were made by the 1st through 4th grade classes that were randomized to watch it as part of their school program. This exercise is based on Cooney (1976).^[Cooney, Joan G. 1976. “The Electric Company: Television and Reading,1971-1980: A Mid-Experiment Appraisal.” New York: Children’s Television Network.]
+
+The data is from a randomized trial. Here we’re looking at a two location trial that randomized at the level of school classes. (Actually it paired classes, but we’ll ignore that for now). Each class was either treated (watch the program) or control (did not watch the program). The outcome of interest - our dependent variable - will be the score on a reading test at the end of the year called `post.score`. Our variables are therefore:
+
+-------------------------------------------------------------------------------
+ Name                 Description
+ -------------------- ---------------------------------------------------------
+ `pair`               The index of the treated and control pair (ignored
+                      here).
+ 
+ `city`               The city: Fresno ("F") or Youngstown ("Y")
+ 
+ `grade`              Grade (1 through 4)
+ 
+ `supp`               Whether the program replaced ("R") or supplemented 
+                      ("S") a reading activity
+
+ `treatment`          "T" if the class was treated, "C" otherwise (randomized)
+ 
+ `pre.score`          Class reading score *before* treatment, at the 
+                      beginning of the school year
+ 
+ `post.score`         Class reading score at the end of the school year
+-------------------------------------------------------------------------------
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      tidy = FALSE,
+                      comment = NA,
+                      message = FALSE)
+library(knitr)
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+
+## Question 1
+
+Read the data into an data frame named `electric`. What sort of variable has R assumed grade is? How will it be treated in a linear model? Under  what circumstances would that be reasonable or unreasonable?
+
+Make a new grade variable that is a factor. How will a linear model treat this new grade variable? Hint: You may find that `summary` illuminates the new data set.
+
+Finally, overwrite the existing treatment variable so that it is 
+numerical: 1 when the class is treated and 0 when not.
+
+## Answer 1
+
+```{r, solution = TRUE}
+electric <- read_csv("electric-company.csv")
+electric <- mutate(electric, 
+                   grade_nom = factor(grade),
+                   treatment = ifelse(treatment == "T", 1, 0))
+summary(electric)
+```
+
+## Question 2
+
+Let's now consider the effect of treatment. First, fit a linear model that predict `post.score` with just treatment. Now fit a model uses your factor version of `grade` as well as treatment.  
+
+Summarise both models in terms of how much of the variance in post.score they 'explain' and the average size of their errors. 
+
+Now, consider each model's treatment coefficient. Are the estimates of this coefficient 
+*different* in the two models? Why do you think that is?
+
+## Answer 2
+
+```{r}
+mod <- lm(post.score ~ treatment, data = electric)
+mod_grade <- lm(post.score ~ treatment + grade_nom, data = electric)
+
+summary(mod)       # R_squared is 0.02
+summary(mod_grade) # R_squared is 0.65!
+```
+
+## Question 3
+
+(Optional). In the previous question we saw that the models agreed about the coefficient estimate. This is a very rare thing in observational data, but it happens in experiments when experimenters have carefully arranged  features of the experiment to be 'balanced' with respect to treatment. For example, the experimental design of this study is to have equal number of classes in treatment and in control within each grade. This makes the treatment indicator and 
+grade indicators independent and therefore uncorrelated. 
+
+To investigate this further, first compute the correlation between these grade and treatment assignment, and then make a table of these two variables. How does the table structure explain the correlation?
+
+Compare this to the correlation of post.score and treatment.
+
+Compute the average `post.score` for each grade. How does this this explain the correlation between post.score and treatment?
+
+Why would it be helpful to 'balance' variables like grade with respect to treatment in this way?
+
+## Answer 3
+
+```{r}
+cor(electric$grade, electric$treatment)
+table(electric$grade, electric$treatment)
+with(electric, prop.table(table(grade, treatment), 1))
+
+cor(electric$post.score, electric$treatment)
+summarize(group_by(electric, grade), 
+          mean_post = mean(post.score))
+```
+
+
+## Question 4
+
+Now make another model that uses the factor version of `grade` and `pre.score` (the reading score before the year begins) to predict `post.score`.  Is this model better? If so, in what ways?
+
+## Answer 4
+
+```{r}
+mod_grade_pre <- lm(post.score ~ treatment + pre.score + grade_nom, data = electric)
+summary(mod_grade_pre) 
+```
+
+
+## Question 5
+
+Now let's consider the effect of treatment *within* each grade. One way to do this is to *interact* treatment with grade. Here's a general modeling principle: 
+
+> If you think the *effect* of variable A varies according to the *values* of 
+> variable B, then you should think of *adding an interaction* between A and B in 
+> your model
+
+Reminder: In the `lm` formula interface this amounts to adding an `A:B` term. For example,
+if A and B interact to predict Y then the formula would be 
+```{r, eval = FALSE}
+Y ~ A + B + A:B
+```
+which would fit the model 
+$$
+Y_i = \beta_0 + A_i \beta_A + B_i \beta_B + (A_i \times B_i) \beta_{AB} + \epsilon_i
+$$
+Another way to fit this model is to use `A*B` to interact `A` and `B`. Since we 
+always want to have `A` and `B` if we have an `A:B` term, this notation makes 
+sure we don't forget any of them. So to fit the model above using this 
+notation the formula is 
+```{r, eval = FALSE}
+Y ~ A * B 
+```
+which is the same model as before because `A * B` is exactly `A + B + A:B`.
+
+Now fit a model of all the grades that includes `pre.score`, `treatment`, and 
+the factor version of grade, interacted with `treatment`. There are now four treatment effects (but how would you construct them from the coefficients?). How do they differ as grade increases? And are these ATEs? If so, for which population are they ATEs for? What do we call ATEs for specific values of pre-treatment variables?
+
+## Answer 5
+
+```{r}
+modint <- lm(post.score ~ treatment + grade_nom + treatment:grade_nom + 
+             pre.score, data = electric)
+summary(modint)
+```
+
+The effects appear large for the first two grades and negligible afterwards.
+They are ATEs but for classes in separate grades. We call these CATEs 
+because they are ATEs conditional on grade, a.k.a heterogenous treatment effects.
+
+Constructing treatment effects from coefficients can be tricky. Let's take a different approach by creating some representative classes and plotting the difference treatment makes. First create 8 fictional classes: 4 treated and 4 untreated, each with an appropriate value of pre-score (for realism we can use the average `pre.score` in each  grade, or for simplicity pick a single `pre.score`). Then, we get predictions from the most recent model for these classes, and plot them.
+
+```{r, fig.height = 3}
+avs <- summarize(group_by(electric, grade_nom), 
+                 pre.score = mean(pre.score))
+avs
+
+rep_classes <- data.frame(treatment = rep(0:1, each = 4),
+                          grade_nom = factor(c(avs$grade_nom, avs$grade_nom)),
+                          pre.score = c(avs$pre.score, avs$pre.score))
+
+preds <- mutate(rep_classes,
+                pred = predict(modint, rep_classes),
+                treatment = ifelse(treatment == 1, "Treated", "Control"))
+
+# plot (note the coordinate flip)
+# group aesthetic makes sure the lines join the right points (try  
+# mapping it to treatment for a different emphasis)
+ggplot(preds, aes(x = grade_nom, 
+                  y = pred, 
+                  color = treatment,
+                  group = grade_nom)) + 
+  geom_line(color = "grey", size = 2) + 
+  geom_point(size = 2) + 
+  ylim(60, 120) +
+  coord_flip() +
+  labs(color = "Class Type",
+       y = "Reading score",
+       x = "Grade",
+       title = "Treatment effects by grade")
+```
+
+Alternatively we could plot ATE estimated against grades:
+
+```{r, fig.height = 3, fig.width=4}
+ates <- spread(preds, treatment, pred)
+ates <- mutate(ates, 
+               ATE = Treated - Control)
+
+ggplot(ates, aes(x = grade_nom, y = ATE)) + 
+  geom_col(fill = "grey") + 
+  labs(x = "Grade",
+       y = "Average Treatment Effect",
+       title = "Treatment effects for each grade")
+```
+

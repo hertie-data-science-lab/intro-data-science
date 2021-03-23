@@ -1,0 +1,22 @@
+---
+title: "Debugging, Automation, and Packaging"
+date: "November 26th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have learned the art of debugging, starting with a general strategy, then following up with specific tools, and (b) are able to turn your code into packages that others can easily download and use.
+
+## Required Readings
+
+1. **AdvR**. Chapter 22 (Debugging).
+2. Wickham, H. (2015). R Packages. O’Reilly Media. Chapters 1, 2, 4—9, 14. http://r-pkgs.had.co.nz/
+
+## Optional Readings 
+
+3. Bryan, Jenny. (2019). All the automation things. https://stat545.com/automation-overview.html
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)

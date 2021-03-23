@@ -1,0 +1,24 @@
+---
+title: "Spatial Data"
+date: "October 1st, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have learned how spatial information can be encoded in spatial features (points, lines, polygons), (b) are able to set up and manage spatial datasets, and (c) can visualize spatial data with R.
+
+## Required Readings
+
+1. Pebesma, E. (2018). Simple features for R: standardized support for spatial vector data. *The R Journal*, 10(1), 439-446. 
+2. Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V., & Pebesma, E. J. (2008). *Applied Spatial Data Analysis with R*. Springer. Chapter 1  
+
+## Optional Readings 
+
+3. CRAN Task View: Analysis of Spatial Data. https://cran.r-project.org/web/views/Spatial.html
+4. Simple Features for R. https://github.com/r-spatial/sf/
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

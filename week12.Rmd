@@ -1,0 +1,15 @@
+---
+title: "Special Topics"
+date: "December 3rd, 2020"
+description: ""
+---
+
+## Learning Objective 
+
+In this session we will take students questions and make suggestion about 
+topics and methods in data science that were not covered in detail during the course.
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+

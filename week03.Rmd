@@ -1,0 +1,17 @@
+---
+title: "Relationally Structured Data"
+date: "September 24th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session you will (a) understand the principles of relational data structures and basic normalization, (b) be able to manipulate and join tables of data, (c) be able to interact with remote relational databases as if local.
+
+## Required Readings
+
+**R4DS**. Chapter 12-13
+  
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)

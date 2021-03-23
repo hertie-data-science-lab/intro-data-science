@@ -1,0 +1,28 @@
+---
+title: "Fitting Models"
+date: "November 5th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session you will (a) understand the bias/variance trade-off
+in model fitting, (b) appreciate the implications of regularization
+strategies and the role of hyperparameter tuning, and (c) have a range
+of evaluation measures and strategies.
+
+## Required Readings
+
+1. Bishop, Christopher M. 2006. *Pattern Recognition and Machine Learning*. New York: Springer. (available online) Ch 1, 3
+
+## Optional Readings 
+
+2. CRAN Task View: Reproducible Research. https://cran.r-project.org/web/views/MachineLearning.html
+3. Bishop, Christopher M. 2006. *Pattern Recognition and Machine Learning*. New York: Springer.
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+
+
+

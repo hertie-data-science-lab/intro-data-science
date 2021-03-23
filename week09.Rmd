@@ -1,0 +1,28 @@
+---
+title: "Visualization"
+date: "November 12th, 2020"
+description: ""
+---
+
+## Learning Objective
+
+After this session, you (a) have learned about basic rules to making visualizations that accurately reflect the data, tell a story, and look professional, (b) have learned about popular mistakes in visualization and how to avoid them, and (c) are able to integrate visualization as an alternative means to analyze data into your workflow.
+
+## Required Readings
+
+1. Wilke, Claus. O. (2019). *Fundamentals of data visualization: a primer on making informative and compelling figures*. O'Reilly Media. https://serialmentor.com/dataviz/
+2. **R4DS**, Chapter 3 (Data visualisation).
+
+## Optional Readings 
+
+3. Healy, K. (2018). *Data visualization: a practical introduction*. Princeton University Press. https://socviz.co/
+4. Traunmüller, R. (2020). Visualizing Data in Political Science. In: L. Curini & R. Franzese (eds.) *The SAGE Handbook of Research Methods in Political Science and International Relations*. Sage. https://tinyurl.com/visualization-polisci 
+5. Wickham, H. (2016). *ggplot2: elegant graphics for data analysis*. Springer. https://ggplot2-book.org/
+6. htmlwidgets for R. https://www.htmlwidgets.org/
+7. Sievert, C. (2019.) *Interactive Web-Based Data Visualization with R, plotly, and shiny*. CRC Press. https://plotly-r.com/
+
+## Lecture
+
+[Link](https://moodle.hertie-school.org/course/index.php?categoryid=266)
+
+

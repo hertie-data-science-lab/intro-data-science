@@ -1,0 +1,84 @@
+---
+title: "Experimental and crowdsourced data"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+```
+
+
+
+A primer to experiments
+---------------------------------
+
+- Slides "Experiments revisited"
+- https://cran.r-project.org/web/views/ExperimentalDesign.html
+
+
+
+An interactive session on experiments
+---------------------------------
+
+Check out education-television.Rmd
+
+
+
+
+Crowdsourcing
+---------------------------------
+
+# What is crowdsourcing?
+Let's refer to a crowdsourced definition, i.e. the definition from Wikipedia (https://en.wikipedia.org/wiki/Crowdsourcing):
+"Crowdsourcing is a sourcing model in which individuals or organizations obtain goods and services, including ideas, voting, micro-tasks and finances, from a large, relatively open and often rapidly evolving group of participants. Currently, crowdsourcing typically involves using the internet to attract and divide work between participants to achieve a cumulative result. The word crowdsourcing itself is a portmanteau of crowd and outsourcing, and was coined in 2006. Crowdsourcing is not necessarily an "online" activity and existed before Internet access became a household commodity."
+
+# Popular crowdsourcing services
+  - Amazon Mechanical Turk (https://www.mturk.com/)
+  - Clickworker (https://www.clickworker.com/)
+  - Appen (formerly Figure Eight formerly Crowdflower; https://appen.com/)
+  
+# Example crowdsourcing platforms and projects
+  - Wikidata (and Wikipedia, of course!; https://www.wikidata.org/)
+  - The Good Judgment Project (https://goodjudgment.com/, https://www.gjopen.com/)
+  - VroniPlag Wiki (https://vroniplag.wikia.org/de/wiki)
+
+# The Amazon MTurk workflow (from the developer guide):
+1. A developer creates an Amazon Mechanical Turk application.
+2. A Requester uses an Amazon Mechanical Turk application to create work, called a HIT, and advertises the work using Amazon Mechanical Turk.
+3. Workers visit the Amazon Mechanical Turk website and decide which work to undertake.
+4. Optionally, the Requester can require the Worker to pass a qualification test before being granted the opportunity to do the work.
+5. The Workers complete one or more HITs and submit their answers using Amazon Mechanical Turk.
+6. The Requester reviews the work and pays the Worker for work done well or rejects the work and does not pay the Worker.
+
+# Research on crowdsourcing platforms
+Note that there's lots of methodological research on crowdsourcing data, tackling technical, measurement, and data quality issues. E.g.: 
+- https://doi.org/10.1093/pan/mpr057
+- https://www.jstor.org/stable/43956975
+- https://doi.org/10.1017/psrm.2020.6
+- https://doi.org/10.1371/journal.pone.0057410
+- http://demographics.mturk-tracker.com/ (Platform to track demographics of MTurk workers)
+
+
+
+An interactive session on Amazon MTurk
+---------------------------------
+
+We are going to explore an example HIT on Amazon Mechanical Turk. We will create and monitor a task as a requester and complete the task as a worker. We will use the (free-to-use) sandbox version of the platform, i.e. we're not setting up real tasks (for pay!) on the real environment. If you want to follow the exercise (which will require you to log in with an Amazon account), please check out:
+- https://requestersandbox.mturk.com/
+- https://workersandbox.mturk.com/
+
+The files we are going to use are
+- mturk-task-politicians.html (the task interface to be uploaded)
+- mturk_tasks_df_csv (the data injected into the individual HITs)
+
+
+
+
+
+
+
